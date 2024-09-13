@@ -1,0 +1,44 @@
+from hsvconstants import *
+import cv2
+import numpy as np
+
+def get_ivals(color_range):
+    ivals = []
+    if color_range[0] > color_range[1]:
+        ivals.append((color_range[0], HSV_MAX))
+        ivals.append((0, color_range[1]))
+    else:
+        ivals.append((color_range[0], color_range[1]))
+    
+    return ivals
+
+
+def transform_to_nparr(ival):
+    mn = np.array([ival[0], 25, 25])
+    mx = np.array([ival[1], 255, 255])
+    return mn, mx
+
+cap = cv2.VideoCapture(0) 
+
+while True:
+    _, frame = cap.read()
+    hsv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV) 
+    def get_image(color):
+        ivals = get_ivals(RANGES[color]) 
+        mask = cv2.inRange(hsv_image, *transform_to_nparr(ivals[0]))
+        
+        for ival in ivals:
+            mask = cv2.bitwise_or(mask, cv2.inRange(hsv_image, *transform_to_nparr(ival)))
+            
+        res = cv2.bitwise_and(frame, frame, mask=mask)
+        cv2.imshow(color, res)
+        
+    
+    for color in ['red', 'blue', 'yellow']:
+        get_image(color)
+    cv2.imshow('src', frame)
+    # This displays the frame, mask  
+    # and res which we created in 3 separate windows. 
+    k = cv2.waitKey(5) & 0xFF
+    if k == 27: 
+        break
