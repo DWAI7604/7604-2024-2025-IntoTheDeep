@@ -18,7 +18,7 @@ def transform_to_nparr(ival):
     mx = np.array([ival[1], 255, 255])
     return mn, mx
 
-cap = cv2.VideoCapture(0) 
+cap = cv2.VideoCapture(0)
 
 while True:
     _, frame = cap.read()
