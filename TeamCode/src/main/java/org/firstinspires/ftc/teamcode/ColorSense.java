@@ -1,5 +1,3 @@
-package org.firstinspires.ftc.teamcode;
-
 class ColorSense {
     static final int HSV_MAX = 180;
     static final int COLOR_RECOGNITION_THRESHOLD = 80;
