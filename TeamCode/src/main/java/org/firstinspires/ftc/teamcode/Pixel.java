@@ -1,3 +1,5 @@
+package org.firstinspires.ftc.teamcode;
+
 public class Pixel {
     private int[] HSV = new int[3];
 

@@ -5,13 +5,6 @@ class ColorSense {
     static final int COLOR_RECOGNITION_THRESHOLD = 80;
     static final int[][] RANGES = {{170, 10}, {10, 60}, {105, 135}};
 
-    // int[][] RANGES = new int[3][2];
-    // RANGES[0][0] = 170;
-    // RANGES[0][1] = 10;
-    // RANGES[1][0] = 10;
-    // RANGES[1][1] = 60;
-    // RANGES[2][0] = 105;
-    // RANGES[2][1] = 135;
     /*
      * 0: Red
      * 1: Yellow
@@ -57,10 +50,10 @@ class ColorSense {
         for (int color = 0; color < 3; color++){
             int[][] ival = get_ivals(RANGES[color]);
 
-            for (int ivalIterator = 0; ivalIterator < ival.length; ivalIterator++){
-                if (ival[ivalIterator][0] != 0 || ival[ivalIterator][1] != 0){
+            for (int[] ints : ival) {
+                if (ints[0] != 0 || ints[1] != 0) {
                     // inside color range
-                    if (ival[ivalIterator][0] <= HSV[0] && HSV[0] <= ival[ivalIterator][1]){
+                    if (ints[0] <= HSV[0] && HSV[0] <= ints[1]) {
                         return color;
                     }
                 }
