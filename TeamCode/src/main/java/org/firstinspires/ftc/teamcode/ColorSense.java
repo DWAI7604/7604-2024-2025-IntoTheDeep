@@ -61,7 +61,7 @@ class ColorSense {
             for (int ivalIterator = 0; ivalIterator < ival.length; ivalIterator++){
                 if (ival[ivalIterator][0] != 0 || ival[ivalIterator][1] != 0){
                     // inside color range
-                    if (ival[ivaliterator][0] <= HSV[0] && HSV[0] <= ival[ivalIterator][1]){
+                    if (ival[ivalIterator][0] <= HSV[0] && HSV[0] <= ival[ivalIterator][1]){
                         return color;
                     }
                 }
