@@ -70,52 +70,52 @@ public class WiringHarness extends RobotLinearOpMode{
         // methods associated with the Rev2mDistanceSensor class.
         Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
 
-        telemetry.addData(">>", "Press start to continue");
-        telemetry.update();
-
-        waitForStart();
-
-        // while the OpMode is active, loop and read whether the sensor is being pressed.
-        // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
-        while (opModeIsActive()) {
-
-            // send the info back to driver station using telemetry function.
-            if (touchSensor.isPressed()) {
-                telemetry.addData("Touch Sensor", "Is Pressed");
-            } else {
-                telemetry.addData("Touch Sensor", "Is Not Pressed");
-            }
-
-            // generic DistanceSensor methods.
-            telemetry.addData("deviceName", sensorDistance.getDeviceName() );
-            telemetry.addData("range", String.format("%.01f mm", sensorDistance.getDistance(DistanceUnit.MM)));
-            telemetry.addData("range", String.format("%.01f cm", sensorDistance.getDistance(DistanceUnit.CM)));
-            telemetry.addData("range", String.format("%.01f m", sensorDistance.getDistance(DistanceUnit.METER)));
-            telemetry.addData("range", String.format("%.01f in", sensorDistance.getDistance(DistanceUnit.INCH)));
-
-            // Rev2mDistanceSensor specific methods.
-            telemetry.addData("ID", String.format("%x", sensorTimeOfFlight.getModelID()));
-            telemetry.addData("did time out", Boolean.toString(sensorTimeOfFlight.didTimeoutOccur()));
-
-            telemetry.update();
-        }
+//        telemetry.addData(">>", "Press start to continue");
+//        telemetry.update();
+//
+//        waitForStart();
+//
+//        // while the OpMode is active, loop and read whether the sensor is being pressed.
+//        // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
+//        while (opModeIsActive()) {
+//
+//            // send the info back to driver station using telemetry function.
+//            if (touchSensor.isPressed()) {
+//                telemetry.addData("Touch Sensor", "Is Pressed");
+//            } else {
+//                telemetry.addData("Touch Sensor", "Is Not Pressed");
+//            }
+//
+//            // generic DistanceSensor methods.
+//            telemetry.addData("deviceName", sensorDistance.getDeviceName() );
+//            telemetry.addData("range", String.format("%.01f mm", sensorDistance.getDistance(DistanceUnit.MM)));
+//            telemetry.addData("range", String.format("%.01f cm", sensorDistance.getDistance(DistanceUnit.CM)));
+//            telemetry.addData("range", String.format("%.01f m", sensorDistance.getDistance(DistanceUnit.METER)));
+//            telemetry.addData("range", String.format("%.01f in", sensorDistance.getDistance(DistanceUnit.INCH)));
+//
+//            // Rev2mDistanceSensor specific methods.
+//            telemetry.addData("ID", String.format("%x", sensorTimeOfFlight.getModelID()));
+//            telemetry.addData("did time out", Boolean.toString(sensorTimeOfFlight.didTimeoutOccur()));
+//
+//            telemetry.update();
+//        }
 
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
-        try {
-            runSample(); // actually execute the sample
-        } finally {
-            // On the way out, *guarantee* that the background is reasonable. It doesn't actually start off
-            // as pure white, but it's too much work to dig out what actually was used, and this is good
-            // enough to at least make the screen reasonable again.
-            // Set the panel back to the default color
-            relativeLayout.post(new Runnable() {
-                public void run() {
-                    relativeLayout.setBackgroundColor(Color.WHITE);
-                }
-            });
-        }
+//        try {
+//            runSample(); // actually execute the sample
+//        } finally {
+//            // On the way out, *guarantee* that the background is reasonable. It doesn't actually start off
+//            // as pure white, but it's too much work to dig out what actually was used, and this is good
+//            // enough to at least make the screen reasonable again.
+//            // Set the panel back to the default color
+//            relativeLayout.post(new Runnable() {
+//                public void run() {
+//                    relativeLayout.setBackgroundColor(Color.WHITE);
+//                }
+//            });
+//        }
 
         OpenCvInternalCamera phoneCam;
         SkystoneDeterminationPipelineRedFar pipeline;
@@ -162,6 +162,120 @@ public class WiringHarness extends RobotLinearOpMode{
          * for later use. We must do this because the analysis will continue
          * to change as the camera view changes once the robot starts moving!
          */
+        if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.CENTER) {
+//            encoderDrive(.7, 37, MOVEMENT_DIRECTION.FORWARD);
+//            purplePixelPlace();
+//            sleep(450);
+//
+//            encoderDrive(.5, 6, MOVEMENT_DIRECTION.STRAFE_LEFT);
+//            encoderTurn(.5, 130, TURN_DIRECTION.TURN_LEFT);
+//
+//
+//
+//            encoderDrive(.4, 25, MOVEMENT_DIRECTION.STRAFE_LEFT);
+//            encoderDrive(.7, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+////
+////            encoderDrive(.4, 9, MOVEMENT_DIRECTION.FORWARD);
+////            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+////            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+////            sleep(12000);
+////            encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+////            encoderDrive(.7, 17, MOVEMENT_DIRECTION.REVERSE);
+//
+//            encoderDrive(.4, 30, MOVEMENT_DIRECTION.REVERSE);
+//            encoderDrive(.7, 63, MOVEMENT_DIRECTION.REVERSE);
+//            sleep(1000); //Make longer as needed
+//            encoderDrive(1, 12, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
+//            distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
+//            yellowPixelPlace();
+//            sleep(300);
+//
+//            encoderDrive(1, 3, MOVEMENT_DIRECTION.FORWARD);
+//            encoderDrive(1, 13, MOVEMENT_DIRECTION.STRAFE_LEFT);
+//            encoderDrive(.7, 10, MOVEMENT_DIRECTION.REVERSE);
+//
+//
+//
+//
+//            motorKill();
+        } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.LEFT) {
+
+//            encoderDrive(.7, 30, MOVEMENT_DIRECTION.FORWARD);
+//            encoderDrive(.5, 8, MOVEMENT_DIRECTION.STRAFE_LEFT);
+//
+//
+//            purplePixelPlace();
+//            sleep(450);
+//
+//            encoderTurn(.5, 140, TURN_DIRECTION.TURN_LEFT);
+//            encoderDrive(.5, 20, MOVEMENT_DIRECTION.STRAFE_LEFT);
+//            encoderDrive(.5, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            encoderDrive(.5, 48, MOVEMENT_DIRECTION.REVERSE);
+//
+//            encoderDrive(.7, 38, MOVEMENT_DIRECTION.REVERSE);
+//            sleep(2000); //Make longer as needed
+//            encoderDrive(1, 16, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
+//            yellowPixelPlace();
+//            sleep(300);
+////            encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+////            encoderDrive(.4, 18, MOVEMENT_DIRECTION.FORWARD);
+////            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+////            encoderDrive(.4, 18, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+////            sleep(9000);
+////            encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+////            encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
+////
+//
+////            distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
+////            encoderDrive(.5, 1.3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+////            yellowPixelPlace();
+////            sleep(400);
+//
+//            encoderDrive(1, 5, MOVEMENT_DIRECTION.FORWARD);
+//            encoderDrive(1, 15, MOVEMENT_DIRECTION.STRAFE_LEFT);
+//            encoderDrive(1, 15, MOVEMENT_DIRECTION.REVERSE);
+//
+//
+//            motorKill();
+        } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.RIGHT) {
+
+//            encoderDrive(.7, 25, MOVEMENT_DIRECTION.FORWARD);
+//            encoderTurn(.5, 135, TURN_DIRECTION.TURN_LEFT);
+//            encoderDrive(.7, 8, MOVEMENT_DIRECTION.REVERSE);
+//
+//            purplePixelPlace();
+//            sleep(450);
+//
+//            encoderDrive(.7, 15, MOVEMENT_DIRECTION.FORWARD);
+//            encoderDrive(.4, 20, MOVEMENT_DIRECTION.STRAFE_LEFT);
+//            encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            encoderDrive(.4, 40, MOVEMENT_DIRECTION.REVERSE);
+//
+//            encoderDrive(.7, 40, MOVEMENT_DIRECTION.REVERSE);
+//            sleep(1800);
+//            encoderDrive(1, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//
+//            distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
+//            yellowPixelPlace();
+//            sleep(300);
+//            encoderDrive(1, 5, MOVEMENT_DIRECTION.FORWARD);
+//            encoderDrive(1, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
+//            encoderDrive(.7, 10, MOVEMENT_DIRECTION.REVERSE);
+//
+//            motorKill();
+
+        } else {
+//            encoderDrive(.6, 50, MOVEMENT_DIRECTION.FORWARD);
+//            encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//
+//
+//            motorKill();
+
+        }
+        stop();
+
     }
 
     public void runSample() {
