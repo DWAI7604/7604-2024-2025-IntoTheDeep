@@ -1,8 +1,8 @@
-class Translator {
+class Translation {
     public static void main(String[] args){
         while (is_auto()){
             Pixel[] frame = camerainput()
-            int color = edWinFunctions.get_color_of_brick(frame);
+            int color = ColorSense.get_color_of_brick(frame);
             // if correct color, pick up
             int TEAM_COLOR;
             if (TEAM_NAME == "red"){
@@ -17,7 +17,7 @@ class Translator {
              * it'll try to grab it, instead of only picking up our team color.
              */
             if (color == TEAM_COLOR || color == 2){
-                pick_up()
+                pick_up();
             }
         }
     }

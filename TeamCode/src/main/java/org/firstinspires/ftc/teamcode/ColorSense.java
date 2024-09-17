@@ -1,9 +1,9 @@
-class edWinFunctions {
+class ColorSense {
     static final int HSV_MAX = 180;
     /* Here is the thing I mentioned below.
      * When I get to school, I'll change the below value to your liking.
      */
-    static final int COLOR_RECOGNITION_THRESHOLD = 50;
+    static final int COLOR_RECOGNITION_THRESHOLD = 80;
     static final int[][] RANGES = {{170, 10}, {10, 60}, {105, 135}};
 
     // int[][] RANGES = new int[3][2];
@@ -18,10 +18,6 @@ class edWinFunctions {
      * 1: Yellow
      * 2: Blue
      */
-
-    public edWinFunctions(){
-        
-    }
 
     // HSV values are 1 to 180, so if you have an interval like (170, 10)
     // you have to change it to (170, 180), (0, 10)
@@ -60,15 +56,13 @@ class edWinFunctions {
         }
         // iterate through all colors
         for (int color = 0; color < 3; color++){
-            for (int i = 0; i < RANGES.length; i++){
-                int[][] ival = get_ivals(RANGES[i]);
+            int[][] ival = get_ivals(RANGES[color]);
 
-                for (int ivalIterator = 0; ivalIterator < ival.length; ivalIterator++){
-                    if (ival[ivalIterator][0] != 0 || ival[ivalIterator][1] != 0){
-                        // inside color range
-                        if (ival[ivaliterator][0] <= HSV[0] && HSV[0] <= ival[ivalIterator][1]){
-                            return color;
-                        }
+            for (int ivalIterator = 0; ivalIterator < ival.length; ivalIterator++){
+                if (ival[ivalIterator][0] != 0 || ival[ivalIterator][1] != 0){
+                    // inside color range
+                    if (ival[ivaliterator][0] <= HSV[0] && HSV[0] <= ival[ivalIterator][1]){
+                        return color;
                     }
                 }
             }
