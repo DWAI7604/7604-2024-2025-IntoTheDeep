@@ -10,12 +10,8 @@ class Translation {
             if (TEAM_NAME == "red"){
                 TEAM_COLOR = 1;
             }
-            else if (TEAM_NAME == "blue"){
-                TEAM_COLOR = 0;
-            }
             else {
-                // This is debug. Shouldn't really happen, ever.
-                TEAM_COLOR = -1;
+                TEAM_COLOR = 0;
             }
 
             /* Jack's Note:
