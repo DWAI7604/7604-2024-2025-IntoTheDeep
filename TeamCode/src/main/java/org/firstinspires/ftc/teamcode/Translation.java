@@ -1,7 +1,7 @@
 class Translation {
     public static void main(String[] args){
         while (is_auto()){
-            Pixel[] frame = camerainput()
+            Pixel[] frame = camerainput();
             int color = ColorSense.get_color_of_brick(frame);
             // if correct color, pick up
             int TEAM_COLOR;

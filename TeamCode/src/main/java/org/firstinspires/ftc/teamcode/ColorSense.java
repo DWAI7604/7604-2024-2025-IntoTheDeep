@@ -1,8 +1,5 @@
 class ColorSense {
     static final int HSV_MAX = 180;
-    /* Here is the thing I mentioned below.
-     * When I get to school, I'll change the below value to your liking.
-     */
     static final int COLOR_RECOGNITION_THRESHOLD = 80;
     static final int[][] RANGES = {{170, 10}, {10, 60}, {105, 135}};
 
@@ -87,11 +84,6 @@ class ColorSense {
         }
         
         // if a color passes the threshold we are confident in the fact that there is a correct color brick underneath us
-        /* Jack's note:
-         * Edwin I have no idea what the threshold is. I forgot to ask, lol.
-         * When I get to school tomorrow, I will set the value to what you want it
-         * to be.
-         */
 
         for (int color = 0; color < 3; color++){
             if (count[color] / total_pixels > COLOR_RECOGNITION_THRESHOLD){
