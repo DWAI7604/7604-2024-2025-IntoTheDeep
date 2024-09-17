@@ -1,3 +1,5 @@
+package org.firstinspires.ftc.teamcode;
+
 class Translation {
     public static void main(String[] args){
         while (is_auto()){
@@ -10,6 +12,10 @@ class Translation {
             }
             else if (TEAM_NAME == "blue"){
                 TEAM_COLOR = 0;
+            }
+            else {
+                // This is debug. Shouldn't really happen, ever.
+                TEAM_COLOR = -1;
             }
 
             /* Jack's Note:
