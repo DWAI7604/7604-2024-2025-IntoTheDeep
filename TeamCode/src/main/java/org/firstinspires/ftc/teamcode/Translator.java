@@ -14,7 +14,7 @@ class Translator {
 
             /* Jack's Note:
              * I made it so that if the color is the team color or yellow,
-             * it'll try to grab it.
+             * it'll try to grab it, instead of only picking up our team color.
              */
             if (color == TEAM_COLOR || color == 2){
                 pick_up()
