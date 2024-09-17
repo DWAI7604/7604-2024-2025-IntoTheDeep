@@ -196,11 +196,14 @@ class ColorSense {
         int rows = mat.rows();
         int cols = mat.cols();
 
-        for (int row = 0; row < rows; row++){
-            for (int col = 0; col < cols; col++){
-                /* Finish this function. the mat is going to be called firstFrame and is in init.
-                * The type inside of firstFrame is   */
-            }
-        }
+        mat.get(0, 0);
+
+//        for (int row = 0; row < rows; row++){
+//            for (int col = 0; col < cols; col++){
+//                /* Finish this function. the mat is going to be called firstFrame and is in init.
+//                * The type inside of firstFrame is  */
+//
+//            }
+//        }
     }
 }
