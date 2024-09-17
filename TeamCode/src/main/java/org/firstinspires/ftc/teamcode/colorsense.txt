@@ -1,44 +1,57 @@
-from hsvconstants import *
-import cv2
-import numpy as np
+# constants
+HSV_MAX = 180
+COLOR_RANGES = {
+    'red': (170, 10),
+    'yellow': (10, 60),
+    'blue': (105, 135)
+} 
 
-def get_ivals(color_range):
-    ivals = []
-    if color_range[0] > color_range[1]:
-        ivals.append((color_range[0], HSV_MAX))
-        ivals.append((0, color_range[1]))
-    else:
-        ivals.append((color_range[0], color_range[1]))
+
+# HSV values are 1 to 180, so if you have an interval like (170, 10)
+# you have to change it to (170, 180), (0, 10)
+# otherwise just return the interval
+def get_ivals(ival):
+    # case like (170, 10)
+    if ival[0] > ival[1]:
+        return [(ival[0], HSV_MAX), (0, ival[1])]
+    # normal case
+    return [(ival[0], ival[1])]
+
+def get_color(hsv):
+    hue, sat, val = hsv
+
+    # too dark / too unsaturated
+    if not (50 <= sat, val <= 255):
+        return 'none'
+
+    # iterate through all colors
+    for color in ['blue', 'red', 'yellow']:
+
+        for low, high in get_ivals(COLOR_RANGES[color]):
+            # inside color range
+            if low <= hue <= high:
+                return color
+
+    # none were in range
+    return 'none'
+
+def get_color_of_brick(frame):
+    # get count of each pixed
+    count = {}
+    total_pixels = frame.size
+    for px in frame:
+        count[get_color(px.hsv)] += 1
+
+    # if a color passes the threshold we are confident in the fact that there is a correct color brick underneath us
+    for color in ['blue', 'red', 'yellow']:
+        if count[color] / total_pixels > COLOR_RECOGNITION_THRESHOLD:
+            return color
     
-    return ivals
+    return 'none'
 
-
-def transform_to_nparr(ival):
-    mn = np.array([ival[0], 25, 25])
-    mx = np.array([ival[1], 255, 255])
-    return mn, mx
-
-cap = cv2.VideoCapture(0)
-
-while True:
-    _, frame = cap.read()
-    hsv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV) 
-    def get_image(color):
-        ivals = get_ivals(RANGES[color]) 
-        mask = cv2.inRange(hsv_image, *transform_to_nparr(ivals[0]))
-        
-        for ival in ivals:
-            mask = cv2.bitwise_or(mask, cv2.inRange(hsv_image, *transform_to_nparr(ival)))
-            
-        res = cv2.bitwise_and(frame, frame, mask=mask)
-        cv2.imshow(color, res)
-        
-    
-    for color in ['red', 'blue', 'yellow']:
-        get_image(color)
-    cv2.imshow('src', frame)
-    # This displays the frame, mask  
-    # and res which we created in 3 separate windows. 
-    k = cv2.waitKey(5) & 0xFF
-    if k == 27: 
-        break
+while is_auto():
+    frame = camerainput()
+    color = get_color_of_brick(frame)
+    # correct color, pick up
+    if color == TEAM_NAME:
+        pick_up()
