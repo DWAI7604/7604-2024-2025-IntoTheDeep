@@ -1,5 +1,39 @@
 package org.firstinspires.ftc.teamcode;
 
+import java.lang.Math;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.LED;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera;
+import org.openftc.easyopencv.OpenCvPipeline;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
 class ColorSense {
     static final int HSV_MAX = 180;
     static final int COLOR_RECOGNITION_THRESHOLD = 80;
@@ -63,6 +97,71 @@ class ColorSense {
         return 3;
     }
 
+    public static double max(double[] values){
+        // Given that all values
+        double maxVal = Double.MIN_VALUE;
+
+        for (double val : values) {
+            if (val > maxVal){
+                maxVal = val;
+            }
+        }
+        return maxVal;
+    }
+
+    public static double min(double[] values){
+        // Given that all values
+        double minVal = Double.MAX_VALUE;
+
+        for (double val : values) {
+            if (val < minVal){
+                minVal = val;
+            }
+        }
+        return minVal;
+    }
+
+    public static int[] convert_rgb_to_hsv(int[] RGB){
+        /* In this function, we assume that RGB is an int array with ranges 0-255,
+        * where index 0 is red, 1 is green, 2 is blue.
+        * We first convert the RGB value to a percentage between 0 and 1.
+        */
+        double[] RGBPercents = {RGB[0] / 255.0, RGB[1] / 255.0, RGB[2] / 255.0};
+        double CMAX = max(RGBPercents);
+        double CMIN = min(RGBPercents);
+
+        double delta = CMAX - CMIN;
+
+        int[] HSV = new int[3];
+
+        // This first chunk of code is to get the Hue value.
+        if (delta == 0){
+            HSV[0] = 0;
+        }
+        else if (CMAX == RGBPercents[0]){
+            HSV[0] = Math.toIntExact(Math.round(60 * (((RGBPercents[1] - RGBPercents[2]) / delta) % 6)));
+        }
+        else if (CMAX == RGBPercents[1]){
+            HSV[0] = Math.toIntExact(Math.round(60 * ((RGBPercents[2] - RGBPercents[0]) / delta + 2)));
+        }
+        else if (CMAX == RGBPercents[2]){
+            HSV[0] = Math.toIntExact(Math.round(60 * ((RGBPercents[0] - RGBPercents[1]) / delta + 4)));
+        }
+
+        // This code gets the Saturation.
+        if (CMAX == 0){
+            HSV[1] = 0;
+        }
+        else {
+            HSV[1] = Math.toIntExact(Math.round(delta / CMAX));
+        }
+
+        // Value is simply CMAX
+        HSV[2] = Math.toIntExact(Math.round(CMAX));
+
+        return HSV;
+    }
+
     public static int get_color_of_brick(Pixel[] frame){
         // get count of each pixel
         int[] count = new int[4];
@@ -92,5 +191,16 @@ class ColorSense {
         */
         return 3;
     }
-    
+
+    public static Pixel[] convertMat(Mat mat){
+        int rows = mat.rows();
+        int cols = mat.cols();
+
+        for (int row = 0; row < rows; row++){
+            for (int col = 0; col < cols; col++){
+                /* Finish this function. the mat is going to be called firstFrame and is in init.
+                * The type inside of firstFrame is   */
+            }
+        }
+    }
 }
