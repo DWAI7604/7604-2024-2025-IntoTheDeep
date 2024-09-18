@@ -31,6 +31,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.ColorSpace;
 import android.view.View;
 
 @Autonomous
@@ -460,6 +461,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
     Mat YCrCb = new Mat();
     Mat Cb = new Mat();
     Mat Cr = new Mat();
+
     int avg1, avg2, avg3;
 
     // Volatile since accessed by OpMode thread w/o synchronization
@@ -478,6 +480,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
     @Override
     public void init(Mat firstFrame)
     {
+
         /*
          * We need to call this in order to make sure the 'Cb'
          * object is initialized, so that the submats we make
