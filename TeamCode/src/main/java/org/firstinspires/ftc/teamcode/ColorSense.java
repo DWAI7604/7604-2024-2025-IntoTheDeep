@@ -197,12 +197,13 @@ class ColorSense {
         int cols = mat.cols();
 
         mat.get(0, 0);
+
+        Mat HSVs = new Mat();
+        
         Imgproc.cvtColor(mat, HSVs, Imgproc.COLOR_RGB2HSV);
 
         Pixel[] pixels = new Pixel[rows * cols];
 
-        Mat HSVs = new Mat();
-        
         int counter = 0;
         for (int row = 0; row < rows; row++){
             for (int col = 0; col < cols; col++){
