@@ -197,13 +197,20 @@ class ColorSense {
         int cols = mat.cols();
 
         mat.get(0, 0);
+        Imgproc.cvtColor(mat, HSVs, Imgproc.COLOR_RGB2HSV);
 
-//        for (int row = 0; row < rows; row++){
-//            for (int col = 0; col < cols; col++){
-//                /* Finish this function. the mat is going to be called firstFrame and is in init.
-//                * The type inside of firstFrame is  */
-//
-//            }
-//        }
+        Pixel[] pixels = new Pixel[rows * cols];
+
+        Mat HSVs = new Mat();
+        
+        int counter = 0;
+        for (int row = 0; row < rows; row++){
+            for (int col = 0; col < cols; col++){
+                /* Finish this function. the mat is going to be called firstFrame and is in init.
+                * Assume type inside of HSVs array is double[] */
+                pixels[counter++] = mat.get(row, col);
+            }
+        }
+        return pixels;
     }
 }
