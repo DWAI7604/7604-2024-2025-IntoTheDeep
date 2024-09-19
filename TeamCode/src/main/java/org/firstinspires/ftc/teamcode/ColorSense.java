@@ -66,7 +66,7 @@ class ColorSense {
         return ivals;
     }
 
-    public static int get_color(int[] HSV){
+    public static int get_color(double[] HSV){
         /*
          * I intend HSV[0] to be HUE, [1] to be SAT, and [2] to be VAL.
          * 
