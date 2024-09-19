@@ -192,6 +192,10 @@ class ColorSense {
         return 3;
     }
 
+    public static int get_color_of_brick(Mat input){
+        return get_color_of_brick(convertMatToPixel(input));
+    }
+
     public static Pixel[] convertMatToPixel(Mat mat){
         int rows = mat.rows();
         int cols = mat.cols();
@@ -199,7 +203,7 @@ class ColorSense {
         mat.get(0, 0);
 
         Mat HSVs = new Mat();
-        
+
         Imgproc.cvtColor(mat, HSVs, Imgproc.COLOR_RGB2HSV);
 
         Pixel[] pixels = new Pixel[rows * cols];
@@ -207,11 +211,12 @@ class ColorSense {
         int counter = 0;
         for (int row = 0; row < rows; row++){
             for (int col = 0; col < cols; col++){
-                /* Finish this function. the mat is going to be called firstFrame and is in init.
+                /* the mat is going to be called firstFrame and is in init.
                 * Assume type inside of HSVs array is double[] */
                 pixels[counter++] = new Pixel(mat.get(row, col));
             }
         }
         return pixels;
     }
+
 }
