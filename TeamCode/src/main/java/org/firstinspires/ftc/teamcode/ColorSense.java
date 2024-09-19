@@ -121,46 +121,46 @@ class ColorSense {
         return minVal;
     }
 
-    public static int[] convert_rgb_to_hsv(int[] RGB){
-        /* In this function, we assume that RGB is an int array with ranges 0-255,
-        * where index 0 is red, 1 is green, 2 is blue.
-        * We first convert the RGB value to a percentage between 0 and 1.
-        */
-        double[] RGBPercents = {RGB[0] / 255.0, RGB[1] / 255.0, RGB[2] / 255.0};
-        double CMAX = max(RGBPercents);
-        double CMIN = min(RGBPercents);
+    // public static int[] convert_rgb_to_hsv(int[] RGB){
+    //     /* In this function, we assume that RGB is an int array with ranges 0-255,
+    //     * where index 0 is red, 1 is green, 2 is blue.
+    //     * We first convert the RGB value to a percentage between 0 and 1.
+    //     */
+    //     double[] RGBPercents = {RGB[0] / 255.0, RGB[1] / 255.0, RGB[2] / 255.0};
+    //     double CMAX = max(RGBPercents);
+    //     double CMIN = min(RGBPercents);
 
-        double delta = CMAX - CMIN;
+    //     double delta = CMAX - CMIN;
 
-        int[] HSV = new int[3];
+    //     int[] HSV = new int[3];
 
-        // This first chunk of code is to get the Hue value.
-        if (delta == 0){
-            HSV[0] = 0;
-        }
-        else if (CMAX == RGBPercents[0]){
-            HSV[0] = Math.toIntExact(Math.round(60 * (((RGBPercents[1] - RGBPercents[2]) / delta) % 6)));
-        }
-        else if (CMAX == RGBPercents[1]){
-            HSV[0] = Math.toIntExact(Math.round(60 * ((RGBPercents[2] - RGBPercents[0]) / delta + 2)));
-        }
-        else if (CMAX == RGBPercents[2]){
-            HSV[0] = Math.toIntExact(Math.round(60 * ((RGBPercents[0] - RGBPercents[1]) / delta + 4)));
-        }
+    //     // This first chunk of code is to get the Hue value.
+    //     if (delta == 0){
+    //         HSV[0] = 0;
+    //     }
+    //     else if (CMAX == RGBPercents[0]){
+    //         HSV[0] = Math.toIntExact(Math.round(60 * (((RGBPercents[1] - RGBPercents[2]) / delta) % 6)));
+    //     }
+    //     else if (CMAX == RGBPercents[1]){
+    //         HSV[0] = Math.toIntExact(Math.round(60 * ((RGBPercents[2] - RGBPercents[0]) / delta + 2)));
+    //     }
+    //     else if (CMAX == RGBPercents[2]){
+    //         HSV[0] = Math.toIntExact(Math.round(60 * ((RGBPercents[0] - RGBPercents[1]) / delta + 4)));
+    //     }
 
-        // This code gets the Saturation.
-        if (CMAX == 0){
-            HSV[1] = 0;
-        }
-        else {
-            HSV[1] = Math.toIntExact(Math.round(delta / CMAX));
-        }
+    //     // This code gets the Saturation.
+    //     if (CMAX == 0){
+    //         HSV[1] = 0;
+    //     }
+    //     else {
+    //         HSV[1] = Math.toIntExact(Math.round(delta / CMAX));
+    //     }
 
-        // Value is simply CMAX
-        HSV[2] = Math.toIntExact(Math.round(CMAX));
+    //     // Value is simply CMAX
+    //     HSV[2] = Math.toIntExact(Math.round(CMAX));
 
-        return HSV;
-    }
+    //     return HSV;
+    // }
 
     public static int get_color_of_brick(Pixel[] frame){
         // get count of each pixel
