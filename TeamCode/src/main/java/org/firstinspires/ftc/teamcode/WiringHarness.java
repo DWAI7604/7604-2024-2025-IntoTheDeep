@@ -656,8 +656,9 @@ class ColorSense {
         double total_pixels = frame.length;
         for (Pixel pixel : frame){
             for(double x: pixel.getHSV()) {
-                System.out.println(x);
+                System.out.print(x);
             }
+            //System.out.println();
 
             count[get_color(pixel.getHSV())]++;
         }
