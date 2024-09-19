@@ -146,7 +146,7 @@ public class WiringHarness extends RobotLinearOpMode{
 
         while (!isStarted() && !isStopRequested())
         {
-            telemetry.addData("Realtime analysis", pipeline.getAnalysis());
+            telemetry.addData("Realtime analysis", pipeline.getColor());
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
@@ -657,9 +657,8 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
 }
 class ColorSense {
     static final int HSV_MAX = 180;
-    static final int COLOR_RECOGNITION_THRESHOLD = 80;
+    static final int COLOR_RECOGNITION_THRESHOLD = 50;
     static final int[][] RANGES = {{170, 10}, {10, 60}, {105, 135}};
-
     /*
      * 0: Red
      * 1: Yellow
