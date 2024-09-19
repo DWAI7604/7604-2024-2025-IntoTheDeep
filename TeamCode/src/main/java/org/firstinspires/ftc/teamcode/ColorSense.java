@@ -171,6 +171,10 @@ class ColorSense {
          * count[0] is for blue, count[1] is for red, count[2] is for yellow
          * similarly to how the get_color function output is coded.
          * count[4] is for no color found
+         * If returned 0, then blue
+         * If returned 1, then red
+         * If returned 2, then yellow
+         * If none found, return 3
          */
         double total_pixels = frame.length;
         for (Pixel pixel : frame){
