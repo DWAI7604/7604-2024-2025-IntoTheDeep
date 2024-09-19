@@ -192,7 +192,7 @@ class ColorSense {
         return 3;
     }
 
-    public static Pixel[] convertMat(Mat mat){
+    public static Pixel[] convertMatToPixel(Mat mat){
         int rows = mat.rows();
         int cols = mat.cols();
 
