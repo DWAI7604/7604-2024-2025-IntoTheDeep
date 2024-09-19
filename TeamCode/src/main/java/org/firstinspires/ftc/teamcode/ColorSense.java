@@ -208,7 +208,7 @@ class ColorSense {
             for (int col = 0; col < cols; col++){
                 /* Finish this function. the mat is going to be called firstFrame and is in init.
                 * Assume type inside of HSVs array is double[] */
-                pixels[counter++] = mat.get(row, col);
+                pixels[counter++] = new Pixel(mat.get(row, col));
             }
         }
         return pixels;
