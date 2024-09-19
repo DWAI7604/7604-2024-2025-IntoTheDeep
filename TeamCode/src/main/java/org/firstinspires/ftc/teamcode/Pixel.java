@@ -24,7 +24,7 @@ public class Pixel {
     }
 
 
-    public int[] getHSV(){
+    public double[] getHSV(){
         return HSV;
     }
 }
