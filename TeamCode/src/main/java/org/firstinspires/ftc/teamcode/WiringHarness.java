@@ -698,15 +698,14 @@ class ColorSense {
          * If returned 2, then yellow
          * If none found, return 3
          */
-        result += frame.length;
-//        double total_pixels = frame.length;
-//        for (int pixel = 38390; pixel < 38401; pixel++) {
-//            for (int x = 0; x < frame[pixel].getHSV().length; x++) {
-//                result += frame[pixel].getHSV()[x] + " ";
-//            }
-//            result += "\n";
-//            count[get_color(frame[pixel].getHSV())]++;
-//        }
+        double total_pixels = frame.length;
+        for (int pixel = 38390; pixel < 38401; pixel++) {
+            for (int x = 0; x < frame[pixel].getHSV().length; x++) {
+                result += frame[pixel].getHSV()[x] + " ";
+            }
+            result += "\n";
+            count[get_color(frame[pixel].getHSV())]++;
+        }
         return result;
     }
 
