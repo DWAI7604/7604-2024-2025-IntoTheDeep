@@ -699,12 +699,12 @@ class ColorSense {
          * If none found, return 3
          */
         double total_pixels = frame.length;
-        for (Pixel pixel : frame) {
-            for (double x : pixel.getHSV()) {
-                result += x + " ";
+        for (int pixel = 0; pixel < frame.length; pixel++) {
+            for (int x = 0; x < frame[pixel].getHSV().length; x++) {
+                result += frame[pixel].getHSV()[x] + " ";
             }
             result += "\n";
-            count[get_color(pixel.getHSV())]++;
+            count[get_color(frame[pixel].getHSV())]++;
         }
         return result;
     }
