@@ -700,7 +700,7 @@ class ColorSense {
          */
         result += frame.length;
 //        double total_pixels = frame.length;
-//        for (int pixel = 0; pixel < 10; pixel++) {
+//        for (int pixel = 38390; pixel < 38401; pixel++) {
 //            for (int x = 0; x < frame[pixel].getHSV().length; x++) {
 //                result += frame[pixel].getHSV()[x] + " ";
 //            }
