@@ -678,6 +678,32 @@ class ColorSense {
         return 3;
     }
 
+    public static String get_string_color_brick(Pixel[] frame){
+        // get count of each pixel
+        int[] count = new int[4];
+        String result = "";
+        /*
+         * Edwin uses a dictionary here. Java has no such dictionary as I'm aware
+         * of, so I'm going to instead omit the "key" part of the array.
+         * count[0] is for blue, count[1] is for red, count[2] is for yellow
+         * similarly to how the get_color function output is coded.
+         * count[4] is for no color found
+         * If returned 0, then blue
+         * If returned 1, then red
+         * If returned 2, then yellow
+         * If none found, return 3
+         */
+        double total_pixels = frame.length;
+        for (Pixel pixel : frame) {
+            for (double x : pixel.getHSV()) {
+                result += x;
+            }
+            result += "\n";
+
+            count[get_color(pixel.getHSV())]++;
+        }
+    }
+
     public static int get_color_of_brick(Mat input){
         return get_color_of_brick(convertMatToPixel(input));
     }
