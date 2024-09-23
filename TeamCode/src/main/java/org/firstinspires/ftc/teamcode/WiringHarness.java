@@ -702,6 +702,7 @@ class ColorSense {
 
             count[get_color(pixel.getHSV())]++;
         }
+        return result;
     }
 
     public static int get_color_of_brick(Mat input){
