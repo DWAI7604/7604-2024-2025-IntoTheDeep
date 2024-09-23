@@ -148,7 +148,7 @@ public class WiringHarness extends RobotLinearOpMode{
 
         while (!isStarted() && !isStopRequested())
         {
-            telemetry.addData("Realtime analysis", pipeline.getColor());
+            telemetry.addData("Realtime analysis", pipeline.getPrint());
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
@@ -463,6 +463,8 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
     private volatile SkystonePosition position = SkystonePosition.RIGHT;
     private volatile int colorLookingAt = -1;
 
+    private volatile String printStatement = "";
+
     /*
      * This function takes the RGB frame, converts to YCrCb,
      * and extracts the Cb channel to the 'Cb' variable
@@ -501,6 +503,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
 
         /* This is the code for color detection */
         colorLookingAt = ColorSense.get_color_of_brick(input);
+        printStatement = ColorSense.get_string_color_brick(input);
         return input;
     }
 
@@ -511,6 +514,8 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
         return position;
     }
     public int getColor() {return colorLookingAt;}
+
+    public String getPrint() {return printStatement;}
 }
 class ColorSense {
     static final int HSV_MAX = 180;
@@ -696,13 +701,16 @@ class ColorSense {
         double total_pixels = frame.length;
         for (Pixel pixel : frame) {
             for (double x : pixel.getHSV()) {
-                result += x;
+                result += x + " ";
             }
             result += "\n";
-
             count[get_color(pixel.getHSV())]++;
         }
         return result;
+    }
+
+    public static String get_string_color_brick(Mat mat){
+        return get_string_color_brick(convertMatToPixel(mat));
     }
 
     public static int get_color_of_brick(Mat input){
