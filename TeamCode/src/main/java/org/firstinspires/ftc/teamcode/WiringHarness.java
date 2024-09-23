@@ -746,9 +746,9 @@ class Pixel {
 
     }
     public Pixel(double hue, double sat, double val){
-        HSV[0] = hue;
-        HSV[1] = sat;
-        HSV[2] = val;
+        HSV[0] = hue * 2;
+        HSV[1] = sat * 2;
+        HSV[2] = val * 2;
     }
 
     public Pixel(double[] HSV){
