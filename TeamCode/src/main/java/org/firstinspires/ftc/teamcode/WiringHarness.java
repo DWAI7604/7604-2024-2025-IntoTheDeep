@@ -692,7 +692,7 @@ class ColorSense {
          * of, so I'm going to instead omit the "key" part of the array.
          * count[0] is for blue, count[1] is for red, count[2] is for yellow
          * similarly to how the get_color function output is coded.
-         * count[4] is for no color found
+         * count[3] is for no color found
          * If returned 0, then blue
          * If returned 1, then red
          * If returned 2, then yellow
