@@ -659,13 +659,19 @@ class ColorSense {
          * If none found, return 3
          */
         double total_pixels = frame.length;
-        for (Pixel pixel : frame){
-            for(double x: pixel.getHSV()) {
-                System.out.print(x);
+        for (int pixel = 38390; pixel < 38401; pixel++) {
+            for (int x = 0; x < frame[pixel].getHSV().length; x++) {
+                count[get_color(frame[pixel].getHSV())]++;
             }
-            System.out.println();
-
-            count[get_color(pixel.getHSV())]++;
+//        }
+            
+//        for (Pixel pixel : frame){
+//            for(double x: pixel.getHSV()) {
+//                System.out.print(x);
+//            }
+//            System.out.println();
+//
+//            count[get_color(pixel.getHSV())]++;
         }
 
         // if a color passes the threshold we are confident in the fact that there is a correct color brick underneath us
