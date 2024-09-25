@@ -732,7 +732,7 @@ class ColorSense {
             for (int col = 0; col < cols; col++){
                 /* the mat is going to be called firstFrame and is in init.
                  * Assume type inside of HSVs array is double[] */
-                pixels[counter++] = new Pixel(mat.get(row, col));
+                pixels[counter++] = new Pixel(HSVs.get(row, col));
             }
         }
         return pixels;
@@ -746,9 +746,9 @@ class Pixel {
 
     }
     public Pixel(double hue, double sat, double val){
-        HSV[0] = hue * 2;
-        HSV[1] = sat * 2;
-        HSV[2] = val * 2;
+        HSV[0] = hue;
+        HSV[1] = sat;
+        HSV[2] = val;
     }
 
     public Pixel(double[] HSV){
