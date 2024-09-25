@@ -148,7 +148,7 @@ public class WiringHarness extends RobotLinearOpMode{
 
         while (!isStarted() && !isStopRequested())
         {
-            telemetry.addData("Realtime analysis", pipeline.getPrint());
+            telemetry.addData("Realtime analysis", pipeline.getColor());
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
@@ -520,7 +520,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
 class ColorSense {
     static final int HSV_MAX = 180;
     static final int COLOR_RECOGNITION_THRESHOLD = 50;
-    static final int[][] RANGES = {{0, 360}, {10, 60}, {105, 135}};
+    static final int[][] RANGES = {{170, 10}, {10, 60}, {105, 135}};
     /*
      * 0: Red
      * 1: Yellow
@@ -559,7 +559,7 @@ class ColorSense {
          */
 
         // too dark / too unsaturated
-        if (!(50 <= HSV[1] && HSV[1] <= 255 && 50 <= HSV[2] && HSV[2] <= 255)){
+        if (!(0 <= HSV[1] && HSV[1] <= 255 && 50 <= HSV[2] && HSV[2] <= 255)){
             return 3;
         }
         // iterate through all colors
@@ -675,6 +675,7 @@ class ColorSense {
                 return color;
             }
         }
+
         /* This return statement might be unnecessary.
          * Because, in the previous for loop, if the majority of pixels have no color
          * found, then it will pass the recognition threshold and return no color.
@@ -702,8 +703,10 @@ class ColorSense {
         for (int pixel = 38390; pixel < 38401; pixel++) {
             for (int x = 0; x < frame[pixel].getHSV().length; x++) {
                 result += frame[pixel].getHSV()[x] + " ";
+
             }
-            result += "\n";
+            result += "\n\n";
+            result += get_color(frame[pixel].getHSV()) + "\n\n";
             count[get_color(frame[pixel].getHSV())]++;
         }
         return result;
