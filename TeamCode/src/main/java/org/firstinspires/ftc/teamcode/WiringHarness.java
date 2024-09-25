@@ -148,7 +148,8 @@ public class WiringHarness extends RobotLinearOpMode{
 
         while (!isStarted() && !isStopRequested())
         {
-            telemetry.addData("Realtime analysis", pipeline.getColor());
+            telemetry.addData("Realtime analysis", pipeline.getPrint());
+            telemetry.addData("Realtime anal:", pipeline.getColor());
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
@@ -559,7 +560,7 @@ class ColorSense {
          */
 
         // too dark / too unsaturated
-        if (!(0 <= HSV[1] && HSV[1] <= 255 && 50 <= HSV[2] && HSV[2] <= 255)){
+        if (!(30 <= HSV[1] && HSV[1] <= 255 && 50 <= HSV[2] && HSV[2] <= 255)){
             return 3;
         }
         // iterate through all colors
@@ -658,7 +659,7 @@ class ColorSense {
          * If returned 2, then yellow
          * If none found, return 3
          */
-        double total_pixels = frame.length;
+        double total_pixels = 10;//frame.length;
         for (int pixel = 38390; pixel < 38401; pixel++) {
             for (int x = 0; x < frame[pixel].getHSV().length; x++) {
                 count[get_color(frame[pixel].getHSV())]++;
@@ -713,6 +714,7 @@ class ColorSense {
             }
             result += "\n\n";
             result += get_color(frame[pixel].getHSV()) + "\n\n";
+
             count[get_color(frame[pixel].getHSV())]++;
         }
         return result;
