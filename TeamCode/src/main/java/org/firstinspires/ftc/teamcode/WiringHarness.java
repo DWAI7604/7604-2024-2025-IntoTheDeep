@@ -552,9 +552,9 @@ class ColorSense {
         /*
          * I intend HSV[0] to be HUE, [1] to be SAT, and [2] to be VAL.
          *
-         * If returned 0, then blue
-         * If returned 1, then red
-         * If returned 2, then yellow
+         * If returned 0, then red
+         * If returned 1, then yellow
+         * If returned 2, then blue
          * If none found, return 3
          */
 
