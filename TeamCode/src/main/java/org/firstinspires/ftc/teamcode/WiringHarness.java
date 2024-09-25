@@ -149,6 +149,7 @@ public class WiringHarness extends RobotLinearOpMode{
         while (!isStarted() && !isStopRequested())
         {
             telemetry.addData("Realtime analysis", pipeline.getPrint());
+            telemetry.addData("Realtime anal:", pipeline.getColor());
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
@@ -520,7 +521,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
 class ColorSense {
     static final int HSV_MAX = 180;
     static final int COLOR_RECOGNITION_THRESHOLD = 50;
-    static final int[][] RANGES = {{0, 360}, {10, 60}, {105, 135}};
+    static final int[][] RANGES = {{170, 10}, {10, 60}, {105, 135}};
     /*
      * 0: Red
      * 1: Yellow
@@ -552,14 +553,14 @@ class ColorSense {
         /*
          * I intend HSV[0] to be HUE, [1] to be SAT, and [2] to be VAL.
          *
-         * If returned 0, then blue
-         * If returned 1, then red
-         * If returned 2, then yellow
+         * If returned 0, then red
+         * If returned 1, then yellow
+         * If returned 2, then blue
          * If none found, return 3
          */
 
         // too dark / too unsaturated
-        if (!(50 <= HSV[1] && HSV[1] <= 255 && 50 <= HSV[2] && HSV[2] <= 255)){
+        if (!(30 <= HSV[1] && HSV[1] <= 255 && 50 <= HSV[2] && HSV[2] <= 255)){
             return 3;
         }
         // iterate through all colors
@@ -658,14 +659,20 @@ class ColorSense {
          * If returned 2, then yellow
          * If none found, return 3
          */
-        double total_pixels = frame.length;
-        for (Pixel pixel : frame){
-            for(double x: pixel.getHSV()) {
-                System.out.print(x);
+        double total_pixels = 10;//frame.length;
+        for (int pixel = 38390; pixel < 38401; pixel++) {
+            for (int x = 0; x < frame[pixel].getHSV().length; x++) {
+                count[get_color(frame[pixel].getHSV())]++;
             }
-            System.out.println();
-
-            count[get_color(pixel.getHSV())]++;
+//        }
+            
+//        for (Pixel pixel : frame){
+//            for(double x: pixel.getHSV()) {
+//                System.out.print(x);
+//            }
+//            System.out.println();
+//
+//            count[get_color(pixel.getHSV())]++;
         }
 
         // if a color passes the threshold we are confident in the fact that there is a correct color brick underneath us
@@ -675,6 +682,7 @@ class ColorSense {
                 return color;
             }
         }
+
         /* This return statement might be unnecessary.
          * Because, in the previous for loop, if the majority of pixels have no color
          * found, then it will pass the recognition threshold and return no color.
@@ -692,7 +700,7 @@ class ColorSense {
          * of, so I'm going to instead omit the "key" part of the array.
          * count[0] is for blue, count[1] is for red, count[2] is for yellow
          * similarly to how the get_color function output is coded.
-         * count[4] is for no color found
+         * count[3] is for no color found
          * If returned 0, then blue
          * If returned 1, then red
          * If returned 2, then yellow
@@ -702,8 +710,11 @@ class ColorSense {
         for (int pixel = 38390; pixel < 38401; pixel++) {
             for (int x = 0; x < frame[pixel].getHSV().length; x++) {
                 result += frame[pixel].getHSV()[x] + " ";
+
             }
-            result += "\n";
+            result += "\n\n";
+            result += get_color(frame[pixel].getHSV()) + "\n\n";
+
             count[get_color(frame[pixel].getHSV())]++;
         }
         return result;
