@@ -4,9 +4,8 @@ import com.acmerobotics.roadrunner.Vector2d;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
-public class ColorLogic
+public class OldColorLogic
 {
     private float FoV;
     private float CamHeight;
