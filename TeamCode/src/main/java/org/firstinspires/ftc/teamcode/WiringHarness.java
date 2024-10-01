@@ -32,6 +32,7 @@ import android.graphics.Color;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.acmerobotics.roadrunner.Vector2d;
@@ -469,6 +470,8 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
     private volatile SkystonePosition position = SkystonePosition.RIGHT;
     private volatile int colorLookingAt = -1;
 
+    private volatile String allPositionsOfTargetColor = "";
+
     private volatile String printStatement = "";
 
     /*
@@ -510,6 +513,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
         /* This is the code for color detection */
         colorLookingAt = ColorSense.get_color_of_brick(input);
         printStatement = ColorSense.get_string_color_brick(input);
+        allPositionsOfTargetColor = ColorLogic.posit
         return input;
     }
 
@@ -520,6 +524,10 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
         return position;
     }
     public int getColor() {return colorLookingAt;}
+
+    public String getDirection(){
+        return allPositionsOfTargetColor;
+    }
 
     public String getPrint() {return printStatement;}
 }
@@ -733,7 +741,7 @@ class ColorSense {
         return get_color_of_brick(convertMatToPixel(input));
     }
 
-    private static Pixel[] convertMatToPixel(Mat mat){
+    public static Pixel[] convertMatToPixel(Mat mat){
         int rows = mat.rows();
         int cols = mat.cols();
 
