@@ -517,9 +517,12 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
         printStatement = ColorSense.get_string_color_brick(input);
 
         allPositionsOfTargetColor = "";
+        List<Vector2d> arrayOfPos = colorLogicObj.GetSamplePositions(ColorSense.convertMatToPixel(input), 0);
 
-        for (Vector2d i : colorLogicObj.GetSamplePositions(ColorSense.convertMatToPixel(input), 0)){
-            allPositionsOfTargetColor += i.toString();
+        if (arrayOfPos != null) {
+            for (Vector2d i : arrayOfPos){
+                allPositionsOfTargetColor += i;
+            }
         }
         return input;
     }
