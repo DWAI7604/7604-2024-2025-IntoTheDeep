@@ -34,7 +34,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.Vector2d;
 
 @Autonomous
@@ -151,11 +151,12 @@ public class WiringHarness extends RobotLinearOpMode{
             }
         });
 
+        ColorLogic colorLogicObj = new ColorLogic(55, 15, 55, new Vector2d(1280, 720), new Vector2d(20, 20)); // change the name later. i went to bed at 3 am. stop it
 
         while (!isStarted() && !isStopRequested())
         {
             telemetry.addData("Realtime analysis", pipeline.getPrint());
-            telemetry.addData("Realtime anal:", pipeline.getColor());
+            telemetry.addData("Realtime anal:", pipeline.getDirection());
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
@@ -470,6 +471,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
     private volatile SkystonePosition position = SkystonePosition.RIGHT;
     private volatile int colorLookingAt = -1;
 
+    private volatile ColorLogic colorLogicObj;
     private volatile String allPositionsOfTargetColor = "";
 
     private volatile String printStatement = "";
@@ -513,7 +515,12 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
         /* This is the code for color detection */
         colorLookingAt = ColorSense.get_color_of_brick(input);
         printStatement = ColorSense.get_string_color_brick(input);
-        allPositionsOfTargetColor = ColorLogic.posit
+
+        allPositionsOfTargetColor = "";
+
+        for (Vector2d i : colorLogicObj.GetSamplePositions(ColorSense.convertMatToPixel(input), 0)){
+            allPositionsOfTargetColor += i.toString();
+        }
         return input;
     }
 
