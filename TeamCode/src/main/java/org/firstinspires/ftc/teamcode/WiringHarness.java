@@ -139,7 +139,7 @@ public class WiringHarness extends RobotLinearOpMode{
             @Override
             public void onOpened()
             {
-                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                phoneCam.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -151,12 +151,10 @@ public class WiringHarness extends RobotLinearOpMode{
             }
         });
 
-        ColorLogic colorLogicObj = new ColorLogic(55, 15, 55, new Vector2d(1280, 720), new Vector2d(20, 20)); // change the name later. i went to bed at 3 am. stop it
-
         while (!isStarted() && !isStopRequested())
         {
-            telemetry.addData("Realtime analysis", pipeline.getPrint());
-            telemetry.addData("Realtime anal:", pipeline.getDirection());
+            //telemetry.addData("Realtime analysis", pipeline.getPrint());
+            telemetry.addData("Realtime analysis:",/*pipeline.getDirection()*/ "hi");
             telemetry.update();
 
             // Don't burn CPU cycles busy-looping in this sample
@@ -471,7 +469,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
     private volatile SkystonePosition position = SkystonePosition.RIGHT;
     private volatile int colorLookingAt = -1;
 
-    private volatile ColorLogic colorLogicObj;
+    private volatile ColorLogic colorLogicObj = new ColorLogic(55, 15, 55, new Vector2d(1280, 720), new Vector2d(20, 20)); // change the name later. i went to bed at 3 am. stop it;
     private volatile String allPositionsOfTargetColor = "";
 
     private volatile String printStatement = "";
@@ -516,13 +514,15 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline {
         colorLookingAt = ColorSense.get_color_of_brick(input);
         printStatement = ColorSense.get_string_color_brick(input);
 
-        allPositionsOfTargetColor = "";
+
         List<Vector2d> arrayOfPos = colorLogicObj.GetSamplePositions(ColorSense.convertMatToPixel(input), 0);
 
-        if (arrayOfPos != null) {
-            for (Vector2d i : arrayOfPos){
-                allPositionsOfTargetColor += i;
-            }
+        if (arrayOfPos != null && arrayOfPos.size() > 0) {
+            allPositionsOfTargetColor = "";
+            allPositionsOfTargetColor = String.valueOf(arrayOfPos.get(0).x) + " " + String.valueOf(arrayOfPos.get(0).y);
+//            for (Vector2d i : arrayOfPos){
+//                allPositionsOfTargetColor += i + "/n";
+//            }
         }
         return input;
     }
