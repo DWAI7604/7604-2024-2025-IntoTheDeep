@@ -323,13 +323,13 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
 
             //Sets the target # of ticks to the target position of the motors
-            slide.setTargetPosition(-target );
+            slide.setTargetPosition(-target);
 
             //Tells the motors to drive until they reach the target position
             slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             //Sets the motor powers to the power entered on use
-            slide.setPower(power);
+            slide.setPower(-power);
 
             while (slide.isBusy() && opModeIsActive()) {
 
