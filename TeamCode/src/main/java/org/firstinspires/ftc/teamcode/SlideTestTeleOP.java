@@ -17,7 +17,7 @@ public class SlideTestTeleOP extends RobotLinearOpMode{
 
     @Override
     public void runOpMode() {
-        declareSlideProperty();
+        //declareSlideProperty();
         //slide  = hardwareMap.get(DcMotor.class, "slide");
 
         waitForStart();
@@ -32,7 +32,7 @@ public class SlideTestTeleOP extends RobotLinearOpMode{
 
             if (bPressed){
                 bPressed = false;
-                encoderSlide(0.3, 10, MOVEMENT_DIRECTION.FORWARD);
+                //encoderSlide(0.3, 10, MOVEMENT_DIRECTION.FORWARD);
                 sleep(1000);
             }
 
@@ -45,7 +45,7 @@ public class SlideTestTeleOP extends RobotLinearOpMode{
 
             if (aPressed){
                 aPressed = false;
-                encoderSlide(0.3, 10, MOVEMENT_DIRECTION.REVERSE);
+                //encoderSlide(0.3, 10, MOVEMENT_DIRECTION.REVERSE);
                 sleep(1000);
             }
 
@@ -58,7 +58,7 @@ public class SlideTestTeleOP extends RobotLinearOpMode{
 
             if (xPressed){
                 xPressed = false;
-                encoderSlide(0.3, 20, MOVEMENT_DIRECTION.REVERSE);
+                //encoderSlide(0.3, 20, MOVEMENT_DIRECTION.REVERSE);
                 sleep(1000);
             }
 
@@ -71,7 +71,7 @@ public class SlideTestTeleOP extends RobotLinearOpMode{
 
             if (yPressed){
                 yPressed = false;
-                encoderSlide(0.3, 20, MOVEMENT_DIRECTION.FORWARD);
+                //encoderSlide(0.3, 20, MOVEMENT_DIRECTION.FORWARD);
                 sleep(1000);
             }
         }

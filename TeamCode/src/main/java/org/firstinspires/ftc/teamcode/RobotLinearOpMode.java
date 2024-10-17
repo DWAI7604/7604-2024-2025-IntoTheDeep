@@ -95,7 +95,8 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     DcMotor leftFrontDriveMotor;
     DcMotor rightBackDriveMotor;
     DcMotor leftBackDriveMotor;
-    DcMotor slide;
+    DcMotor slideUp;
+    DcMotor slideForward;
     NormalizedColorSensor colorSensor;
     AprilTagProcessor aprilTag;
     VisionPortal visionPortal;
@@ -103,15 +104,10 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     boolean placingPixel = false;
     boolean searching;
     boolean aTagSeen = false;
+    boolean aWasPressed = false;
+    boolean bWasPressed = false;
+    long waitTime = 0;
     private ElapsedTime runtime = new ElapsedTime();
-
-
-
-
-
-
-
-
 
 
     public void encoderDrive(double power, double inches, MOVEMENT_DIRECTION movement_direction) {
@@ -196,7 +192,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (rightFrontDriveMotor.isBusy() && opModeIsActive()) {
+            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
 
             }
             //Kills the motors to prepare for next call of method
@@ -227,7 +223,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (rightFrontDriveMotor.isBusy() && opModeIsActive()) {
+            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
 
             }
 
@@ -258,7 +254,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (rightFrontDriveMotor.isBusy() && opModeIsActive()) {
+            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
 
             }
 
@@ -281,7 +277,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         rightBackDriveMotor.setPower(0);
     }
 
-    public void encoderSlide(double power, double inches, MOVEMENT_DIRECTION movement_direction) {
+    public void encoderSlideUp(double power, double inches, MOVEMENT_DIRECTION movement_direction) {
 
 
         //Specifications of hardware
@@ -296,52 +292,115 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         int target;
 
         //Resets motor encoders to 0 ticks
-        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slideUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Sets the target # of ticks by intaking the number of desired inches of movement and converting to ticks
-        target = slide.getCurrentPosition() + (int) (inches * TICKS_PER_INCH);
+        target = slideUp.getCurrentPosition() + (int) (inches * TICKS_PER_INCH);
 
         if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
 
             //Sets the target # of ticks to the target position of the motors
-            slide.setTargetPosition(target);
+            slideUp.setTargetPosition(target);
 
             //Tells the motors to drive until they reach the target position
-            slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slideUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             //Sets the motor powers to the power entered on use
-            slide.setPower(power);
+            slideUp.setPower(power);
 
-            while (slide.isBusy() && opModeIsActive()) {
+            while (slideUp.isBusy() && opModeIsActive()) {
 
             }
 
             //Kills the motors to prepare for next call of method
-            slide.setPower(0);
+            slideUp.setPower(0);
         }
 
         if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
 
             //Sets the target # of ticks to the target position of the motors
-            slide.setTargetPosition(-target);
+            slideUp.setTargetPosition(-target);
 
             //Tells the motors to drive until they reach the target position
-            slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slideUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             //Sets the motor powers to the power entered on use
-            slide.setPower(-power);
+            slideUp.setPower(-power);
 
-            while (slide.isBusy() && opModeIsActive()) {
+            while (slideUp.isBusy() && opModeIsActive()) {
 
             }
             //Kills the motors to prepare for next call of method
-            slide.setPower(0);
+            slideUp.setPower(0);
         }
 
-        slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideUp.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Kills the motors to prepare for next call of method
-        slide.setPower(0);
+        slideUp.setPower(0);
+    }
+
+    public void encoderSlideForward(double power, double inches, MOVEMENT_DIRECTION movement_direction) {
+
+
+        //Specifications of hardware
+        final double WHEEL_DIAMETER_INCHES = 1.5291339;
+        final double WHEEL_CIRCUMFERENCE_INCHES = (WHEEL_DIAMETER_INCHES * 3.141592653589793);
+        final double GEAR_RATIO = 19.2;
+        final double COUNTS_PER_ROTATION_AT_MOTOR = 537.7;
+        final double TICKS_PER_ROTATION = (COUNTS_PER_ROTATION_AT_MOTOR);
+        final double TICKS_PER_INCH = (TICKS_PER_ROTATION) / (WHEEL_CIRCUMFERENCE_INCHES);
+
+        //Target # of ticks for each motor
+        int target;
+
+        //Resets motor encoders to 0 ticks
+        slideForward.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Sets the target # of ticks by intaking the number of desired inches of movement and converting to ticks
+        target = slideForward.getCurrentPosition() + (int) (inches * TICKS_PER_INCH);
+
+        if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
+
+            //Sets the target # of ticks to the target position of the motors
+            slideForward.setTargetPosition(target);
+
+            //Tells the motors to drive until they reach the target position
+            slideForward.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            //Sets the motor powers to the power entered on use
+            slideForward.setPower(power);
+
+            while (slideForward.isBusy() && opModeIsActive()) {
+
+            }
+
+            //Kills the motors to prepare for next call of method
+            slideForward.setPower(0);
+        }
+
+        if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
+
+            //Sets the target # of ticks to the target position of the motors
+            slideForward.setTargetPosition(-target);
+
+            //Tells the motors to drive until they reach the target position
+            slideForward.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            //Sets the motor powers to the power entered on use
+            slideForward.setPower(-power);
+
+            while (slideForward.isBusy() && opModeIsActive()) {
+
+            }
+            //Kills the motors to prepare for next call of method
+            slideForward.setPower(0);
+        }
+
+        slideForward.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //Kills the motors to prepare for next call of method
+        slideForward.setPower(0);
     }
 
     /*public void encoderLift(double power, double inches, LIFT_DIRECTION lift_direction) {
@@ -410,8 +469,8 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         final double WHEEL_DIAMETER_INCHES = 3.77953;
         final double WHEEL_CIRCUMFERENCE_INCHES = (WHEEL_DIAMETER_INCHES * 3.141592653589793);
         final double TICKS_PER_ROTATION = (537.7);
-        final double ROBOT_LENGTH = 13;
-        final double ROBOT_WIDTH = (15 +(7/8));
+        final double ROBOT_LENGTH = 16;
+        final double ROBOT_WIDTH = 16;
         final double TICKS_PER_INCH = (TICKS_PER_ROTATION/WHEEL_CIRCUMFERENCE_INCHES);
 
         final double TURNING_DISTANCE = ((degrees/360) * 3.141592653589793 * Math.sqrt((Math.pow(ROBOT_LENGTH, 2)) + Math.pow(ROBOT_WIDTH, 2)));
@@ -1551,19 +1610,41 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         rightBackDriveMotor.setPower(0);
     }
 
-    public void declareSlideProperty(){
-        slide = hardwareMap.get(DcMotor.class, "slide");
-        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//    public void declareSlideProperty(){
+//        slide = hardwareMap.get(DcMotor.class, "slide");
+//        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//    }
+
+    public void declareAutoVariables(){
+        if(gamepad1.a&&!aWasPressed) {
+            waitTime+=500;
+            aWasPressed=true;
+        } else if(!gamepad1.a&&aWasPressed) {
+            aWasPressed=false;
+        }
+
+        if(gamepad1.b&&!bWasPressed&&waitTime>=500) {
+            waitTime-=500;
+            bWasPressed=true;
+        } else if(!gamepad1.b&&bWasPressed) {
+            bWasPressed=false;
+        }
+
+        telemetry.addData("Wait Duration (A to increase, B to decrease)",waitTime);
+        telemetry.update();
     }
+
 
     public void declareHardwareProperties() {
 
 
         rightFrontDriveMotor = hardwareMap.get(DcMotor.class, "rightFrontDriveMotor");
-        leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "leftFrontDriveMotor");
+        leftBackDriveMotor = hardwareMap.get(DcMotor.class, "leftFrontDriveMotor");
         rightBackDriveMotor = hardwareMap.get(DcMotor.class, "rightBackDriveMotor");
-        leftBackDriveMotor = hardwareMap.get(DcMotor.class, "leftBackDriveMotor");
-        slide = hardwareMap.get(DcMotor.class, "slide");
+        leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "leftBackDriveMotor");
+        slideUp = hardwareMap.get(DcMotor.class, "slideUp");
+        slideForward = hardwareMap.get(DcMotor.class, "slideForward");
+
 
         rightFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         leftFrontDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
@@ -1574,8 +1655,10 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         leftFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideForward.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+
     }
 
     enum MOVEMENT_DIRECTION {
