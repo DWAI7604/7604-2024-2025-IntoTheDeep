@@ -277,6 +277,19 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         rightBackDriveMotor.setPower(0);
     }
 
+    public void encoderSlideUpTime(double power, double seconds, MOVEMENT_DIRECTION movement_direction){
+        runtime.reset();
+        while (runtime.seconds() < seconds){
+            if (movement_direction == MOVEMENT_DIRECTION.FORWARD){
+                slideUp.setPower(power);
+            }
+            else{
+                slideUp.setPower(-power);
+            }
+        }
+        slideUp.setPower(0);
+    }
+
     public void encoderSlideUp(double power, double inches, MOVEMENT_DIRECTION movement_direction) {
 
 

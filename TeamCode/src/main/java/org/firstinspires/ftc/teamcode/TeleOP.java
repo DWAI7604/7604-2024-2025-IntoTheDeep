@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -65,24 +66,49 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
 
-public class TeleOP extends LinearOpMode {
+public class TeleOP extends RobotLinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFront = null;
-    private DcMotor leftBack = null;
-    private DcMotor rightFront = null;
-    private DcMotor rightBack = null;
+    private DcMotor leftFrontDriveMotor = null;
+    private DcMotor leftBackDriveMotor = null;
+    private DcMotor rightFrontDriveMotor = null;
+    private DcMotor rightBackDriveMotor = null;
+    DcMotor slideUp;
+    DcMotor slideForward;
+    private boolean aPressed = false;
+    private boolean bPressed = false;
+    private boolean xPressed = false;
+    private boolean yPressed = false;
+    private int placeCount;
 
     @Override
     public void runOpMode() {
 
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
-        leftFront  = hardwareMap.get(DcMotor.class, "leftFront");
-        leftBack  = hardwareMap.get(DcMotor.class, "leftBack");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
+
+        rightFrontDriveMotor = hardwareMap.get(DcMotor.class, "rightFrontDriveMotor");
+        leftBackDriveMotor = hardwareMap.get(DcMotor.class, "leftFrontDriveMotor");
+        rightBackDriveMotor = hardwareMap.get(DcMotor.class, "rightBackDriveMotor");
+        leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "leftBackDriveMotor");
+        slideUp = hardwareMap.get(DcMotor.class, "slideUp");
+        slideForward = hardwareMap.get(DcMotor.class, "slideForward");
+
+
+        rightFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        leftFrontDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        leftBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideForward.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        declareHardwareProperties();
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -117,23 +143,23 @@ public class TeleOP extends LinearOpMode {
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
-            double leftFrontPower  = axial + lateral + yaw;
+            double leftFrontPower  = axial - lateral + yaw;
             double rightFrontPower = axial - lateral - yaw;
-            double leftBackPower   = axial - lateral + yaw;
+            double leftBackPower   = axial + lateral + yaw;
             double rightBackPower  = axial + lateral - yaw;
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
-            max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
-            max = Math.max(max, Math.abs(leftBackPower));
-            max = Math.max(max, Math.abs(rightBackPower));
-
-            if (max > 1.0) {
-                leftFrontPower  /= max;
-                rightFrontPower /= max;
-                leftBackPower   /= max;
-                rightBackPower  /= max;
-            }
+//            max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+//            max = Math.max(max, Math.abs(leftBackPower));
+//            max = Math.max(max, Math.abs(rightBackPower));
+//
+//            if (max > 1.0) {
+//                leftFrontPower  /= max;
+//                rightFrontPower /= max;
+//                leftBackPower   /= max;
+//                rightBackPower  /= max;
+//            }
 
             // This is test code:
             //
@@ -146,22 +172,68 @@ public class TeleOP extends LinearOpMode {
             // Once the correct motors move in the correct direction re-comment this code.
 
 
-            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
-            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
-            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
-            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
+//            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+//            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
+//            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
+//            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
 
 
             // Send calculated power to wheels
-            leftFront.setPower(leftFrontPower);
-            rightFront.setPower(rightFrontPower);
-            leftBack.setPower(leftBackPower);
-            rightBack.setPower(rightBackPower);
+            leftFrontDriveMotor.setPower(leftFrontPower);
+            rightFrontDriveMotor.setPower(rightFrontPower);
+            leftBackDriveMotor.setPower(leftBackPower);
+            rightBackDriveMotor.setPower(rightBackPower);
+
+            if (gamepad1.a && !aPressed) {
+                aPressed = true;
+            }
+            else if (!gamepad1.a && aPressed){
+                aPressed = false;
+            }
+
+            if (aPressed){
+                aPressed = false;
+                encoderSlideUp(0.7, 17, MOVEMENT_DIRECTION.FORWARD);
+                encoderDrive(0.2, 4, MOVEMENT_DIRECTION.REVERSE);
+                encoderSlideUp(0.7, 3, MOVEMENT_DIRECTION.REVERSE);
+                encoderDrive(0.4, 5, MOVEMENT_DIRECTION.FORWARD);
+                encoderSlideUpTime(0.7, 1.5, MOVEMENT_DIRECTION.REVERSE);
+                placeCount++;
+            }
+
+            if (gamepad1.x && !xPressed) {
+                xPressed = true;
+            }
+            else if (!gamepad1.x && xPressed){
+                xPressed = false;
+            }
+
+            if (xPressed){
+                xPressed = false;
+                encoderDrive(0.4, 3, MOVEMENT_DIRECTION.STRAFE_LEFT);
+                sleep(1000);
+                encoderDrive(0.4, 18, MOVEMENT_DIRECTION.REVERSE);
+                sleep(200);
+                encoderSlideUp(0.7, 5, MOVEMENT_DIRECTION.FORWARD);
+                encoderDrive(0.4, 15, MOVEMENT_DIRECTION.FORWARD);
+                encoderSlideUpTime(0.4, 1, MOVEMENT_DIRECTION.REVERSE);
+            }
+//
+            if (gamepad1.y && !yPressed) {
+                yPressed = true;
+            }
+            else if (!gamepad1.y && yPressed){
+                yPressed = false;
+            }
+
+            slideUp.setPower(gamepad1.right_trigger);
+            slideUp.setPower(-gamepad1.left_trigger);
+
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+//            telemetry.addData("Status", "Run Time: " + runtime.toString());
+//            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+//            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.update();
         }
     }}
