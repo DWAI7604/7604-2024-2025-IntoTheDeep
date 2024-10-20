@@ -106,7 +106,10 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     boolean aTagSeen = false;
     boolean aWasPressed = false;
     boolean bWasPressed = false;
+    boolean xWasPressed = false;
+    boolean yWasPressed = false;
     long waitTime = 0;
+    boolean placeAndPark;
     private ElapsedTime runtime = new ElapsedTime();
 
 
@@ -1643,7 +1646,22 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             bWasPressed=false;
         }
 
+        if(gamepad1.x&&!xWasPressed) {
+            placeAndPark = true;
+            xWasPressed=true;
+        } else if(!gamepad1.x&&xWasPressed) {
+            xWasPressed = false;
+        }
+
+        if(gamepad1.y&&!yWasPressed) {
+            placeAndPark = false;
+            yWasPressed=true;
+        } else if(!gamepad1.y&&yWasPressed) {
+            yWasPressed=false;
+        }
+
         telemetry.addData("Wait Duration (A to increase, B to decrease)",waitTime);
+        telemetry.addData("place and park", placeAndPark);
         telemetry.update();
     }
 
