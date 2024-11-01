@@ -74,6 +74,7 @@ public class TeleOP extends RobotLinearOpMode {
     private DcMotor leftBackDriveMotor = null;
     private DcMotor rightFrontDriveMotor = null;
     private DcMotor rightBackDriveMotor = null;
+    private DcMotor hangMotor;
     DcMotor slideUp;
     DcMotor slideForward;
     private boolean aPressed = false;
@@ -94,6 +95,7 @@ public class TeleOP extends RobotLinearOpMode {
         leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "leftBackDriveMotor");
         slideUp = hardwareMap.get(DcMotor.class, "slideUp");
         slideForward = hardwareMap.get(DcMotor.class, "slideForward");
+        hangMotor = hardwareMap.get(DcMotor.class, "hangMotor");
 
 
         rightFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
@@ -107,6 +109,7 @@ public class TeleOP extends RobotLinearOpMode {
         rightFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideForward.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        hangMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         declareHardwareProperties();
 
@@ -228,6 +231,18 @@ public class TeleOP extends RobotLinearOpMode {
 
             slideUp.setPower(gamepad1.right_trigger);
             slideUp.setPower(-gamepad1.left_trigger);
+
+            if (gamepad1.right_bumper){
+                hangMotor.setPower(0.5);
+            }
+
+            if (gamepad1.left_bumper){
+                hangMotor.setPower(-0.5);
+            }
+
+            if (!gamepad1.right_bumper && !gamepad1.left_bumper){
+                hangMotor.setPower(0);
+            }
 
 
             // Show the elapsed game time and wheel power.
