@@ -94,7 +94,7 @@ public class TeleOP extends RobotLinearOpMode {
         rightBackDriveMotor = hardwareMap.get(DcMotor.class, "rightBackDriveMotor");
         leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "leftBackDriveMotor");
         slideUp = hardwareMap.get(DcMotor.class, "slideUp");
-        slideForward = hardwareMap.get(DcMotor.class, "slideForward");
+        //slideForward = hardwareMap.get(DcMotor.class, "slideForward");
         hangMotor = hardwareMap.get(DcMotor.class, "hangMotor");
 
 
@@ -108,7 +108,7 @@ public class TeleOP extends RobotLinearOpMode {
         rightBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slideForward.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //slideForward.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         hangMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         declareHardwareProperties();
