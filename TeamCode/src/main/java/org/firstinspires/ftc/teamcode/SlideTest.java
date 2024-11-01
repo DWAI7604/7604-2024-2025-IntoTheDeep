@@ -9,10 +9,12 @@ public class SlideTest extends RobotLinearOpMode{
 
     public void runOpMode() {
         //declareSlideProperty();
+        declareHardwareProperties();
 
         waitForStart();
 
         while (opModeIsActive()) {
+            encoderDrive(.5,50, MOVEMENT_DIRECTION.FORWARD);
             //encoderSlide(0.3, 5, MOVEMENT_DIRECTION.FORWARD);
             sleep(1000);
             //encoderSlide(0.3, 5, MOVEMENT_DIRECTION.REVERSE);

@@ -145,7 +145,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
 
             //Sets the target # of ticks to the target position of the motors
-            leftFrontDriveMotor.setTargetPosition(leftFrontTarget);
+            leftFrontDriveMotor.setTargetPosition(-leftFrontTarget);
             rightFrontDriveMotor.setTargetPosition(rightFrontTarget - (int)(rightFrontTarget * 0.0016605117));
             leftBackDriveMotor.setTargetPosition(leftBackTarget);
             rightBackDriveMotor.setTargetPosition(rightBackTarget - (int)(rightBackTarget * 0.0016605117));
@@ -178,7 +178,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
 
             //Sets the target # of ticks to the target position of the motors
-            leftFrontDriveMotor.setTargetPosition(-leftFrontTarget );
+            leftFrontDriveMotor.setTargetPosition(leftFrontTarget );
             rightFrontDriveMotor.setTargetPosition(-rightFrontTarget + (int)(rightFrontTarget * 0.0016605117));
             leftBackDriveMotor.setTargetPosition(-leftBackTarget);
             rightBackDriveMotor.setTargetPosition(-rightBackTarget + (int)(rightBackTarget * 0.0016605117));
@@ -210,7 +210,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             //Sets the target # of ticks to the target position of the motors
             leftFrontDriveMotor.setTargetPosition(-leftFrontTarget * 2 );
             rightFrontDriveMotor.setTargetPosition(2*(-rightFrontTarget + (int)(rightFrontTarget * 0.0016605117)));
-            leftBackDriveMotor.setTargetPosition(leftBackTarget * 2 );
+            leftBackDriveMotor.setTargetPosition(-leftBackTarget * 2 );
             rightBackDriveMotor.setTargetPosition((rightBackTarget - (int)(rightBackTarget * 0.0016605117))*2);
 
 
@@ -242,7 +242,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             //Sets the target # of ticks to the target position of the motors
             leftFrontDriveMotor.setTargetPosition(leftFrontTarget * 2);
             rightFrontDriveMotor.setTargetPosition((rightFrontTarget - (int)(rightFrontTarget * 0.0016605117))*2);
-            leftBackDriveMotor.setTargetPosition(-leftBackTarget * 2);
+            leftBackDriveMotor.setTargetPosition(leftBackTarget * 2);
             rightBackDriveMotor.setTargetPosition(-(rightBackTarget + (int)(rightBackTarget * 0.0016605117))* 2);
 
             //Tells the motors to drive until they reach the target position
@@ -525,7 +525,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         if(turn_direction == TURN_DIRECTION.TURN_RIGHT) {
 
             //Sets the target # of ticks to the target position of the motors
-            leftFrontDriveMotor.setTargetPosition(leftFrontTarget);
+            leftFrontDriveMotor.setTargetPosition(-leftFrontTarget);
             rightFrontDriveMotor.setTargetPosition(-rightFrontTarget);
             leftBackDriveMotor.setTargetPosition(leftBackTarget);
             rightBackDriveMotor.setTargetPosition(-rightBackTarget);
@@ -555,7 +555,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         if(turn_direction == TURN_DIRECTION.TURN_LEFT) {
 
             //Sets the target # of ticks to the target position of the motors
-            leftFrontDriveMotor.setTargetPosition(-leftFrontTarget);
+            leftFrontDriveMotor.setTargetPosition(leftFrontTarget);
             rightFrontDriveMotor.setTargetPosition(rightFrontTarget);
             leftBackDriveMotor.setTargetPosition(-leftBackTarget );
             rightBackDriveMotor.setTargetPosition(rightBackTarget );
@@ -1678,7 +1678,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
 
         rightFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        leftFrontDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        leftFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         leftBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
 

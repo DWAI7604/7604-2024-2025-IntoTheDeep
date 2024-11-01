@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -99,7 +100,7 @@ public class TeleOP extends RobotLinearOpMode {
 
 
         rightFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        leftFrontDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        leftFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         leftBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
@@ -146,9 +147,9 @@ public class TeleOP extends RobotLinearOpMode {
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
-            double leftFrontPower  = axial - lateral + yaw;
+            double leftFrontPower  = -axial - lateral - yaw;
             double rightFrontPower = axial - lateral - yaw;
-            double leftBackPower   = axial + lateral + yaw;
+            double leftBackPower   = axial - lateral + yaw;
             double rightBackPower  = axial + lateral - yaw;
 
             // Normalize the values so no wheel power exceeds 100%
@@ -196,7 +197,7 @@ public class TeleOP extends RobotLinearOpMode {
 
             if (aPressed){
                 aPressed = false;
-                encoderSlideUp(0.7, 17, MOVEMENT_DIRECTION.FORWARD);
+                encoderSlideUp(0.7, 16, MOVEMENT_DIRECTION.FORWARD);
                 encoderDrive(0.2, 4, MOVEMENT_DIRECTION.REVERSE);
                 encoderSlideUp(0.7, 3, MOVEMENT_DIRECTION.REVERSE);
                 encoderDrive(0.4, 5, MOVEMENT_DIRECTION.FORWARD);
@@ -233,11 +234,11 @@ public class TeleOP extends RobotLinearOpMode {
             slideUp.setPower(-gamepad1.left_trigger);
 
             if (gamepad1.right_bumper){
-                hangMotor.setPower(0.5);
+                hangMotor.setPower(1);
             }
 
             if (gamepad1.left_bumper){
-                hangMotor.setPower(-0.5);
+                hangMotor.setPower(-1);
             }
 
             if (!gamepad1.right_bumper && !gamepad1.left_bumper){
