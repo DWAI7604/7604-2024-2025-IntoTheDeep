@@ -37,6 +37,7 @@ public class BasicAuto extends RobotLinearOpMode{
                 encoderDrive(0.4, 15, MOVEMENT_DIRECTION.FORWARD);
                 encoderTurn(0.8, 220, TURN_DIRECTION.TURN_RIGHT);
                 encoderDrive(0.4, 6, MOVEMENT_DIRECTION.STRAFE_LEFT);
+                encoderSlideUpTime(0.7, 0.2, MOVEMENT_DIRECTION.REVERSE);
                 encoderDrive(0.4, 32, MOVEMENT_DIRECTION.STRAFE_RIGHT);
                 encoderDrive(0.4, 10, MOVEMENT_DIRECTION.REVERSE);
                 encoderSlideUp(0.7, 16, MOVEMENT_DIRECTION.FORWARD);
