@@ -233,15 +233,15 @@ public class TeleOP extends RobotLinearOpMode {
             slideUp.setPower(gamepad1.right_trigger);
             slideUp.setPower(-gamepad1.left_trigger);
 
-            if (gamepad1.right_bumper){
+            if (gamepad2.right_bumper){
                 hangMotor.setPower(1);
             }
 
-            if (gamepad1.left_bumper){
+            if (gamepad2.left_bumper){
                 hangMotor.setPower(-1);
             }
 
-            if (!gamepad1.right_bumper && !gamepad1.left_bumper){
+            if (!gamepad2.right_bumper && !gamepad2.left_bumper){
                 hangMotor.setPower(0);
             }
 
