@@ -293,6 +293,78 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         slideUp.setPower(0);
     }
 
+    public void EncoderSlide(double TargetPos, int TargetTime, int UpdateSpeed)
+    {
+        //TargetPos is the goal position in inches
+        //TargetTime is the target amount of milliseconds before the goal is reached
+        //UpdateSpeed is the amount of milleseconds between updates
+
+        //Specifications of hardware
+        final double WHEEL_DIAMETER_INCHES = 1.5291339;
+        final double WHEEL_CIRCUMFERENCE_INCHES = (WHEEL_DIAMETER_INCHES * 3.141592653589793);
+        final double GEAR_RATIO = 19.2;
+        final double COUNTS_PER_ROTATION_AT_MOTOR = 537.7;
+        final double TICKS_PER_ROTATION = (COUNTS_PER_ROTATION_AT_MOTOR);
+        final double TICKS_PER_INCH = (TICKS_PER_ROTATION) / (WHEEL_CIRCUMFERENCE_INCHES);
+        final double MAX_LENGTH = 60;
+        final double Uncertainty = 5;
+        final double UncertaintyThreshold = 10;
+        final double Kp = 1; //Proportional gain.
+        final double Ki = 1; //Integral gain.
+        final double Kd = 1; //Derivative gain.
+
+        int TargetPosInTicks = (int)(TargetPos * TICKS_PER_INCH);
+        int TimeElapsed = 0;
+        int Current = 0;
+        Current = slideUp.getCurrentPosition();
+
+        int Target = Current;//Current target in ticks
+
+        double Error = 0;
+        double de = 0;
+        double ErrorSum = 0;
+        double Power = 0;
+
+        //Sets the target # of ticks to the target position of the motors
+        slideUp.setTargetPosition(TargetPosInTicks);
+
+        slideUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        Power = (TargetPosInTicks > Target ? 0.1 : -0.1);
+
+        slideUp.setPower(Power);
+
+        while (slideUp.isBusy() && TimeElapsed <= TargetTime * 1.1)
+        {
+            Current = slideUp.getCurrentPosition();
+
+            de = Error;
+
+            Error = Target - Current;
+            ErrorSum += Error;
+
+            de = Error - de;
+
+            Power = -Power;
+
+            Power += Kp * Error;
+
+            Power += Ki * ErrorSum;
+
+            Power += Kd * de;
+
+            if (Math.abs(Error) < UncertaintyThreshold)
+            {
+                Target = (TargetPosInTicks - Current) / Math.abs(TargetTime - TimeElapsed);
+            }
+
+            slideUp.setPower(Power);
+
+            sleep(UpdateSpeed);
+            TimeElapsed += UpdateSpeed;
+        }
+    }
+
     public void encoderSlideUp(double power, double inches, MOVEMENT_DIRECTION movement_direction) {
 
 
