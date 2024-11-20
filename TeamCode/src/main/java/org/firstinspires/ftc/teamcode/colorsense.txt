@@ -1,0 +1,57 @@
+# constants
+HSV_MAX = 180
+COLOR_RANGES = {
+    'red': (170, 10),
+    'yellow': (10, 60),
+    'blue': (105, 135)
+} 
+
+
+# HSV values are 1 to 180, so if you have an interval like (170, 10)
+# you have to change it to (170, 180), (0, 10)
+# otherwise just return the interval
+def get_ivals(ival):
+    # case like (170, 10)
+    if ival[0] > ival[1]:
+        return [(ival[0], HSV_MAX), (0, ival[1])]
+    # normal case
+    return [(ival[0], ival[1])]
+
+def get_color(hsv):
+    hue, sat, val = hsv
+
+    # too dark / too unsaturated
+    if not (50 <= sat, val <= 255):
+        return 'none'
+
+    # iterate through all colors
+    for color in ['blue', 'red', 'yellow']:
+
+        for low, high in get_ivals(COLOR_RANGES[color]):
+            # inside color range
+            if low <= hue <= high:
+                return color
+
+    # none were in range
+    return 'none'
+
+def get_color_of_brick(frame):
+    # get count of each pixed
+    count = {}
+    total_pixels = frame.size
+    for px in frame:
+        count[get_color(px.hsv)] += 1
+
+    # if a color passes the threshold we are confident in the fact that there is a correct color brick underneath us
+    for color in ['blue', 'red', 'yellow']:
+        if count[color] / total_pixels > COLOR_RECOGNITION_THRESHOLD:
+            return color
+    
+    return 'none'
+
+while is_auto():
+    frame = camerainput()
+    color = get_color_of_brick(frame)
+    # correct color, pick up
+    if color == TEAM_NAME:
+        pick_up()
