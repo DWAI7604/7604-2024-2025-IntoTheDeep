@@ -293,59 +293,66 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         slideUp.setPower(0);
     }
 
-    public void EncoderSlide(double TargetPos, int TargetTime, int UpdateSpeed)
+    public void EncoderSlide(double TargetPos, int TargetTime, int UpdateSpeed, double Kp, double Kd)
     {
         //TargetPos is the goal position in inches
         //TargetTime is the target amount of milliseconds before the goal is reached
         //UpdateSpeed is the amount of milleseconds between updates
 
         //Specifications of hardware
-        final double WHEEL_DIAMETER_INCHES = 1.5291339;
+        final double WHEEL_DIAMETER_INCHES = 1.625;
         final double WHEEL_CIRCUMFERENCE_INCHES = (WHEEL_DIAMETER_INCHES * 3.141592653589793);
-        final double GEAR_RATIO = 19.2;
         final double COUNTS_PER_ROTATION_AT_MOTOR = 537.7;
         final double TICKS_PER_ROTATION = (COUNTS_PER_ROTATION_AT_MOTOR);
         final double TICKS_PER_INCH = (TICKS_PER_ROTATION) / (WHEEL_CIRCUMFERENCE_INCHES);
-        final double MAX_LENGTH = 60;
-        final double Uncertainty = 5;
-        final double UncertaintyThreshold = 10;
-        final double Kp = 1; //Proportional gain.
-        final double Ki = 1; //Integral gain.
-        final double Kd = 1; //Derivative gain.
+        final double UncertaintyThreshold = 999999999;
+        //final double Kp = 0.01; //Proportional gain.
+        final double Ki = 0; //Integral gain.
+        //final double Kd = 0.02; //Derivative gain.
 
         int TargetPosInTicks = (int)(TargetPos * TICKS_PER_INCH);
         int TimeElapsed = 0;
         int Current = 0;
         Current = slideUp.getCurrentPosition();
 
-        int Target = Current;//Current target in ticks
+        float Target = Current;//Current target in ticks
 
+        double LastActive = 0;
         double Error = 0;
         double de = 0;
         double ErrorSum = 0;
         double Power = 0;
+        double PrevPower = 0;
+
+        telemetry.addData("Power", Power);
+        telemetry.addData("CurrentPos", Current);
+        telemetry.addData("CurrentTarget", Target);
+        telemetry.addData("Target", TargetPosInTicks);
+
 
         //Sets the target # of ticks to the target position of the motors
-        slideUp.setTargetPosition(TargetPosInTicks);
+        //slideUp.setTargetPosition(TargetPosInTicks);
 
-        slideUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //slideUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideUp.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         Power = (TargetPosInTicks > Target ? 0.1 : -0.1);
 
         slideUp.setPower(Power);
 
-        while (slideUp.isBusy() && TimeElapsed <= TargetTime * 1.1)
+        while (TimeElapsed <= TargetTime && TimeElapsed - LastActive <= 250)
         {
+            PrevPower = Power;
             Current = slideUp.getCurrentPosition();
 
             de = Error;
 
-            Error = Target - Current;
-            ErrorSum += Error;
+            Error = TargetPosInTicks - Current;
+            //ErrorSum += 0.5 * (Error + de) * UpdateSpeed;
+            ErrorSum += Error * (TimeElapsed / 1000.0);
+            de = (Error - de) / (TimeElapsed / 1000.0);
 
-            de = Error - de;
-
-            Power = -Power;
+            /*Power = -Power;
 
             Power += Kp * Error;
 
@@ -353,16 +360,43 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
             Power += Kd * de;
 
-            if (Math.abs(Error) < UncertaintyThreshold)
-            {
-                Target = (TargetPosInTicks - Current) / Math.abs(TargetTime - TimeElapsed);
-            }
+            double Dif = Power - PrevPower;
+            Dif = Dif < -0.02 ? -0.02 : Dif > 0.02 ? 0.02 : Dif;
+
+            Power = PrevPower + Dif;
+
+            //PrevPower = Power;*/
+            Power = Kp * Error + Ki * ErrorSum * Kd * de;
+
+            Power = (Power < -2) ? -2 : (Power > 2 ? 2 : Power);
+
+            /*if (Math.abs(Error) < UncertaintyThreshold)
+            {*/
+                Target = ((TargetPosInTicks - Current) / Math.abs((float)TargetTime - TimeElapsed));
+            //}
 
             slideUp.setPower(Power);
 
+            telemetry.addData("UnboundPower", PrevPower);
+            telemetry.addData("Power", Power);
+            telemetry.addData("CurrentPos", Current);
+            telemetry.addData("CurrentTarget", Target);
+            telemetry.addData("Target", TargetPosInTicks);
+            telemetry.addData("RemainingDist", (TargetPosInTicks - Current));
+            telemetry.addData("RemainingTime", (TargetTime - TimeElapsed));
+            telemetry.addData("TimeElapsed", TimeElapsed);
+            telemetry.update();
+
             sleep(UpdateSpeed);
             TimeElapsed += UpdateSpeed;
+
+            if (Math.abs(Power) > 0.1 && Math.abs(Current - TargetPosInTicks) > 10)
+            {
+                LastActive = TimeElapsed;
+            }
         }
+
+        slideUp.setPower(0);
     }
 
     public void encoderSlideUp(double power, double inches, MOVEMENT_DIRECTION movement_direction) {
@@ -1737,6 +1771,11 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         telemetry.update();
     }
 
+    public void declareSlideProperty()
+    {
+        slideUp = hardwareMap.get(DcMotor.class, "slideUp");
+        slideUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
 
     public void declareHardwareProperties() {
 
