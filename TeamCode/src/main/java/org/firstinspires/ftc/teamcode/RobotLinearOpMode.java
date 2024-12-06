@@ -96,6 +96,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     DcMotor rightBackDriveMotor;
     DcMotor leftBackDriveMotor;
     DcMotor slideUp;
+    DcMotor slideUp2;
     //DcMotor slideForward;
     NormalizedColorSensor colorSensor;
     AprilTagProcessor aprilTag;
@@ -335,10 +336,12 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
         //slideUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slideUp.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideUp2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         Power = (TargetPosInTicks > Target ? 0.1 : -0.1);
 
         slideUp.setPower(Power);
+        slideUp2.setPower(Power);
 
         while (TimeElapsed <= TargetTime && TimeElapsed - LastActive <= 250)
         {
@@ -376,6 +379,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             //}
 
             slideUp.setPower(Power);
+            slideUp2.setPower(Power);
 
             telemetry.addData("UnboundPower", PrevPower);
             telemetry.addData("Power", Power);
@@ -397,6 +401,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         }
 
         slideUp.setPower(0);
+        slideUp2.setPower(0);
     }
 
     public void encoderSlideUp(double power, double inches, MOVEMENT_DIRECTION movement_direction) {
@@ -1775,6 +1780,9 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     {
         slideUp = hardwareMap.get(DcMotor.class, "slideUp");
         slideUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        slideUp2 = hardwareMap.get(DcMotor.class, "slideUp2");
+        slideUp2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void declareHardwareProperties() {
@@ -1785,6 +1793,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         rightBackDriveMotor = hardwareMap.get(DcMotor.class, "rightBackDriveMotor");
         leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "leftBackDriveMotor");
         slideUp = hardwareMap.get(DcMotor.class, "slideUp");
+        slideUp2 = hardwareMap.get(DcMotor.class, "slideUp2");
         //slideForward = hardwareMap.get(DcMotor.class, "slideForward");
 
 
