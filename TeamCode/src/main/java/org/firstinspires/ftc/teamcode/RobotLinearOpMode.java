@@ -408,7 +408,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
 
         //Specifications of hardware
-        final double WHEEL_DIAMETER_INCHES = 1.5291339;
+        final double WHEEL_DIAMETER_INCHES = 1.625984;
         final double WHEEL_CIRCUMFERENCE_INCHES = (WHEEL_DIAMETER_INCHES * 3.141592653589793);
         final double GEAR_RATIO = 19.2;
         final double COUNTS_PER_ROTATION_AT_MOTOR = 537.7;
