@@ -88,8 +88,9 @@ public class Translation extends RobotLinearOpMode {
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
 
         horizontalDrive = hardwareMap.get(DcMotor.class, "horizontal_slide_drive");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "right_Vslide_drive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "left_Vslide_drive");
+        leftVertDrive = hardwareMap.get(DcMotor.class, "right_Vslide_drive");
+        rightVertDrive = hardwareMap.get(DcMotor.class, "left_Vslide_drive");
+
 
 
         // ########################################################################################
@@ -145,21 +146,23 @@ public class Translation extends RobotLinearOpMode {
 
 
 
-            if(gamepad1.a){
+            if(gamepad1.a && horizontalDrive!=null){
                 horizontalDrive.setPower(-1.0);
-            }else if(gamepad1.b){
+            }else if(gamepad1.b && horizontalDrive!=null){
                 horizontalDrive.setPower(1.0);
-            }else if(gamepad1.y){
+            }else if(gamepad1.y && leftVertDrive!=null && rightVertDrive!=null){
                 leftVertDrive.setPower(1.0);
                 rightVertDrive.setPower(-1.0);
-            }else if(gamepad1.x) {
+            }else if(gamepad1.x && leftVertDrive!=null && rightVertDrive!=null) {
                 leftVertDrive.setPower(-1.0);
                 rightVertDrive.setPower(1.0);
-            } else{
+            }else if( leftVertDrive!=null && rightVertDrive!=null && horizontalDrive!=null){
                 leftVertDrive.setPower(0.0);
                 rightVertDrive.setPower(0.0);
                 horizontalDrive.setPower(0.0);
             }
+
+
 
 
             // This is test code:
