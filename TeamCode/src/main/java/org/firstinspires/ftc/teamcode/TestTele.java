@@ -25,6 +25,9 @@ public class TestTele extends RobotLinearOpMode {
         x = Math.min(x, higher);
         return x;
     }
+
+    AutoControl ac;
+
     @Override
     public void runOpMode() {
         // Initialize hardware
@@ -35,6 +38,9 @@ public class TestTele extends RobotLinearOpMode {
         horizontalDrive = hardwareMap.get(DcMotor.class, "horizontal_slide_drive");
         leftVertDrive = hardwareMap.get(DcMotor.class, "left_Vslide_drive");
         rightVertDrive = hardwareMap.get(DcMotor.class, "right_Vslide_drive");
+
+        ac = new AutoControl(leftFrontDrive, leftBackDrive,  rightFrontDrive,  rightBackDrive,
+                horizontalDrive, leftVertDrive, rightVertDrive);
 
         // Set drive motor directions
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -117,23 +123,7 @@ public class TestTele extends RobotLinearOpMode {
             rightVertDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             horizontalDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            // Set power for slides
-            if (gamepad1.y || gamepad1.x) { // Vertical slide movement
-                leftVertDrive.setPower(0.6);
-                rightVertDrive.setPower(0.6);
-            } else {
-                leftVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftVertDrive.setPower(0.6); // Hold position
-                rightVertDrive.setPower(0.6);
-            }
 
-            if (gamepad1.a || gamepad1.b) { // Horizontal slide movement
-                horizontalDrive.setPower(0.6);
-            } else {
-                horizontalDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                horizontalDrive.setPower(0.6); // Hold position
-            }
 
             if (gamepad1.right_bumper){
                 horizontalDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -142,8 +132,11 @@ public class TestTele extends RobotLinearOpMode {
             }
 
             if(gamepad1.left_bumper){
-                //tbd
+                ac.autoGo();
             }
+
+
+
 
             // Debugging telemetry
             telemetry.addData("Run Time", runtime.toString());
