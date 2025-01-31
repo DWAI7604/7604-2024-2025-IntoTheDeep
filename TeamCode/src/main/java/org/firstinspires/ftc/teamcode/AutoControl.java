@@ -81,10 +81,10 @@ public class AutoControl {
         rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set power to move
-        leftFrontDrive.setPower(0.6);
-        rightFrontDrive.setPower(0.6);
-        leftBackDrive.setPower(0.6);
-        rightBackDrive.setPower(0.6);
+        leftFrontDrive.setPower(0.3);
+        rightFrontDrive.setPower(0.3);
+        leftBackDrive.setPower(0.3);
+        rightBackDrive.setPower(0.3);
 
         // Wait until robot reaches target position
         while (leftFrontDrive.isBusy() || rightFrontDrive.isBusy() || leftBackDrive.isBusy() || rightBackDrive.isBusy()) {
@@ -92,6 +92,33 @@ public class AutoControl {
         }
 
         // Stop motors after movement
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
+    }
+    // Method to drive forward for a specific number of seconds
+    public void driveBackwardForSeconds(double seconds) {
+
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // Reset and start the runtime timer
+        runtime.reset();
+
+        // Set motors to drive forward
+        leftFrontDrive.setPower(-0.2);
+        rightFrontDrive.setPower(-0.2);
+        leftBackDrive.setPower(-0.2);
+        rightBackDrive.setPower(-0.2);
+
+        // Wait until the specified time has passed
+        while (runtime.time() < seconds) {
+            // Optionally, add telemetry or other logic here if needed
+        }
+
+        // Stop the motors after the time has elapsed
         leftFrontDrive.setPower(0);
         rightFrontDrive.setPower(0);
         leftBackDrive.setPower(0);
@@ -130,22 +157,22 @@ public class AutoControl {
 
     public void moveSliderUp(int ticks) {
 
-        targetLeftPosition = clamp(targetLeftPosition, initialLeftPosition-5000, initialLeftPosition+5000);
-        targetRightPosition = clamp(targetRightPosition, initialRightPosition-5000, initialRightPosition+5000);
-        targetHorizontalPosition = clamp(targetHorizontalPosition, initialHorizontalPosition-5000, initialHorizontalPosition+5000);
-        // Reset encoders for consistent behavior
-        leftVertDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightVertDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         // Set target position
         targetRightPosition+=ticks;
         targetLeftPosition-=ticks;
+
+        targetLeftPosition = clamp(targetLeftPosition, initialLeftPosition-5000, initialLeftPosition+5000);
+        targetRightPosition = clamp(targetRightPosition, initialRightPosition-5000, initialRightPosition+5000);
+        targetHorizontalPosition = clamp(targetHorizontalPosition, initialHorizontalPosition-5000, initialHorizontalPosition+5000);
 
         leftVertDrive.setTargetPosition(targetLeftPosition);
         rightVertDrive.setTargetPosition(targetRightPosition);
 
         leftVertDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightVertDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        leftVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Set power to move the slider
         leftVertDrive.setPower(0.6);
@@ -154,14 +181,6 @@ public class AutoControl {
         leftVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // Wait until the slider reaches the target position
-        while (leftVertDrive.isBusy() || rightVertDrive.isBusy()) {
-            // Optionally add telemetry or other feedback
-        }
-
-        // Stop motors after movement
-        //leftVertDrive.setPower(0);
-        //rightVertDrive.setPower(0);
     }
 
 
@@ -199,48 +218,77 @@ public class AutoControl {
         rightBackDrive.setPower(0);
     }
 
-    // Method to extend the vertical slide to a specified height in inches (approximated with ticks)
-    public void extendVerticalSlides(int ticks) {
-        int ticksPerInch = 10; // Example conversion, adjust based on robot mechanics
+    public void scoreSpecimen() {
+        int amt = 120;
+        moveSliderUp(amt*tick2cm);
+        while(leftVertDrive.isBusy()) {
 
-        leftVertDrive.setTargetPosition(+ ticks);
-        rightVertDrive.setTargetPosition(- ticks); // Opposing movement
-
-        leftVertDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightVertDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // Set power to extend slides
-        leftVertDrive.setPower(0.6);
-        rightVertDrive.setPower(0.6);
-
-        // Wait until slides reach target position
-        while (leftVertDrive.isBusy() || rightVertDrive.isBusy()) {
+        }
+        driveBackwardForSeconds(1);
+        while (leftFrontDrive.isBusy() || rightFrontDrive.isBusy() || leftBackDrive.isBusy() || rightBackDrive.isBusy()) {
             // Optionally, update telemetry or handle other logic here
         }
-
-        // Stop motors after extension
-        //leftVertDrive.setPower(0);
-        //rightVertDrive.setPower(0);
+        moveSliderUp(-amt*tick2cm);
     }
+    // Method to strafe right by a specific number of ticks
+    public void goRight(int ticks) {
+        // Reset encoders for the horizontal drive motor
+        horizontalDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-    // Method to drive forward, backward, spin, and raise the vertical extender in a sequence
+        // Set the target position for strafing right
+        horizontalDrive.setTargetPosition(horizontalDrive.getCurrentPosition() + ticks);
+
+        // Set the motor to run to the target position
+        horizontalDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Set the power to move
+        horizontalDrive.setPower(0.6);
+
+        // Wait until the motor reaches the target position
+        while (horizontalDrive.isBusy()) {
+            // Optionally, add telemetry updates or additional logic here
+        }
+
+        // Stop the motor after reaching the target position
+        horizontalDrive.setPower(0);
+    }
+    public boolean isBusy() {
+        return leftFrontDrive.isBusy()
+                || rightFrontDrive.isBusy()
+                || leftBackDrive.isBusy()
+                || rightBackDrive.isBusy()
+                || horizontalDrive.isBusy()
+                || leftVertDrive.isBusy()
+                || rightVertDrive.isBusy();
+    }
     public void autoGo() {
-        
-        //autoDriveBackward(60 * tick2cm);  // drive forward
-        moveSliderUp(20*tick2cm);
+
+        autoDriveForward(-70*tick2cm);
+        while(isBusy()) {}
+        scoreSpecimen();
+        while(isBusy()) {}
+        autoDriveForward(20*tick2cm);
+        while(isBusy()) {}
+        autoSpin180();
+        while(isBusy()) {}
+        // Facing towards enemy side, a bit behind the reds
+
+        // Wall bang, aligning rotation
+        goRight(100*tick2cm);
+        while(isBusy()) {}
+        // Go back
+        goRight(-50*tick2cm);
+        while(isBusy()) {}
+        // Get behind the blocks
+        autoDriveForward(30);
+        goRight(20);
+        autoDriveBackward(70);
+        autoDriveForward(70);
+        goRight(20);
+        autoDriveForward(70);
+        autoDriveBackward(70);
 
 
 
-
-        //autoDriveBackward(12 * tick2cm); //drive back
-
-        // Step 3: Spin 180 degrees
-        //autoSpin180();
-
-        // Step 4: Raise the vertical extender
-        //extendVerticalSlides(24 * tick2cm);
-
-        // Step 5: Drive forward
-        //autoDriveForward(12 * tick2cm);
     }
 }

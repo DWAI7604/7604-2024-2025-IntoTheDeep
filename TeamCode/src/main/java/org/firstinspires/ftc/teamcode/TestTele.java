@@ -39,6 +39,8 @@ public class TestTele extends RobotLinearOpMode {
         leftVertDrive = hardwareMap.get(DcMotor.class, "left_Vslide_drive");
         rightVertDrive = hardwareMap.get(DcMotor.class, "right_Vslide_drive");
 
+        boolean Debounce = false;
+
         ac = new AutoControl(leftFrontDrive, leftBackDrive,  rightFrontDrive,  rightBackDrive,
                 horizontalDrive, leftVertDrive, rightVertDrive);
 
@@ -93,49 +95,16 @@ public class TestTele extends RobotLinearOpMode {
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
 
-            // Vertical slide control
-            if (gamepad1.y) { // Extend upward
-                targetLeftPosition += 100;
-                targetRightPosition -= 100;
-            } else if (gamepad1.x) { // Retract downward
-                targetLeftPosition -= 100;
-                targetRightPosition += 100;
-            }
-
-            // Horizontal slide control
-            if (gamepad1.a) { // Extend horizontally
-                targetHorizontalPosition += 50;
-            } else if (gamepad1.b) { // Retract horizontally
-                targetHorizontalPosition -= 50;
-            }
-
-            // Apply position limits
-            targetLeftPosition = clamp(targetLeftPosition, initialLeftPosition-5000, initialLeftPosition+5000);
-            targetRightPosition = clamp(targetRightPosition, initialRightPosition-5000, initialRightPosition+5000);
-            targetHorizontalPosition = clamp(targetHorizontalPosition, initialHorizontalPosition-5000, initialHorizontalPosition+5000);
-
-            // Set target positions for slides
-            leftVertDrive.setTargetPosition(targetLeftPosition);
-            rightVertDrive.setTargetPosition(targetRightPosition);
-            horizontalDrive.setTargetPosition(targetHorizontalPosition);
-
-            leftVertDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightVertDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            horizontalDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-
-            if (gamepad1.right_bumper){
-                horizontalDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
 
             if(gamepad1.left_bumper){
                 ac.autoGo();
             }
-
-
+            if(gamepad1.y && !Debounce) {
+                Debounce = true;
+                ac.scoreSpecimen();
+            } else if (!gamepad1.y && Debounce) {
+                Debounce = false;
+            }
 
 
             // Debugging telemetry
