@@ -76,6 +76,7 @@ public class TeleOP extends RobotLinearOpMode {
     private DcMotor rightFrontDriveMotor = null;
     private DcMotor rightBackDriveMotor = null;
     private DcMotor hangMotor;
+    public boolean isRunning = false;
     DcMotor slideUp;
     DcMotor slideForward;
     private boolean aPressed = false;

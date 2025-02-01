@@ -69,6 +69,7 @@ public class TestTele extends RobotLinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
+
             // Drivetrain control
             double axial = -gamepad1.left_stick_y;  // Forward/backward
             double lateral = gamepad1.left_stick_x;  // Strafing
@@ -96,7 +97,7 @@ public class TestTele extends RobotLinearOpMode {
             rightBackDrive.setPower(rightBackPower);
 
 
-            if(gamepad1.left_bumper){
+            if(gamepad1.right_bumper){
                 ac.autoGo();
             }
             if(gamepad1.y && !Debounce) {
@@ -106,6 +107,20 @@ public class TestTele extends RobotLinearOpMode {
                 Debounce = false;
             }
 
+            if (gamepad1.x) {
+                leftVertDrive.setPower(-0.6);
+                rightVertDrive.setPower(-0.6);
+            }
+
+            if (gamepad1.b) {
+                leftVertDrive.setPower(0.6);
+                rightVertDrive.setPower(0.6);
+            }
+
+            if(!gamepad1.x && !gamepad1.b && !ac.isRunning){
+              leftVertDrive.setPower(0);
+              rightVertDrive.setPower(0);
+            }
 
             // Debugging telemetry
             telemetry.addData("Run Time", runtime.toString());

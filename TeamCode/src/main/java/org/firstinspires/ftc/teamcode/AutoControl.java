@@ -98,7 +98,7 @@ public class AutoControl {
         rightBackDrive.setPower(0);
     }
     // Method to drive forward for a specific number of seconds
-    public void driveBackwardForSeconds(double seconds) {
+    public void driveForSeconds(double seconds, String dir) {
 
         leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -107,11 +107,13 @@ public class AutoControl {
         // Reset and start the runtime timer
         runtime.reset();
 
+        double pow = -0.2;
+        if(dir.equals("fwd")) pow = 0.2;
         // Set motors to drive forward
-        leftFrontDrive.setPower(-0.2);
-        rightFrontDrive.setPower(-0.2);
-        leftBackDrive.setPower(-0.2);
-        rightBackDrive.setPower(-0.2);
+        leftFrontDrive.setPower(pow);
+        rightFrontDrive.setPower(pow);
+        leftBackDrive.setPower(pow);
+        rightBackDrive.setPower(pow);
 
         // Wait until the specified time has passed
         while (runtime.time() < seconds) {
@@ -155,32 +157,22 @@ public class AutoControl {
         rightBackDrive.setPower(0);
     }
 
-    public void moveSliderUp(int ticks) {
+    public void moveSlider(double sec, String dir) {
+        if(dir.equals("up")) {
+            leftVertDrive.setPower(-0.8);
+            rightVertDrive.setPower(-0.8);
+        } else {
+            leftVertDrive.setPower(0.8);
+            rightVertDrive.setPower(0.8);
+        }
 
-        // Set target position
-        targetRightPosition+=ticks;
-        targetLeftPosition-=ticks;
-
-        targetLeftPosition = clamp(targetLeftPosition, initialLeftPosition-5000, initialLeftPosition+5000);
-        targetRightPosition = clamp(targetRightPosition, initialRightPosition-5000, initialRightPosition+5000);
-        targetHorizontalPosition = clamp(targetHorizontalPosition, initialHorizontalPosition-5000, initialHorizontalPosition+5000);
-
-        leftVertDrive.setTargetPosition(targetLeftPosition);
-        rightVertDrive.setTargetPosition(targetRightPosition);
-
-        leftVertDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightVertDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        leftVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        // Set power to move the slider
-        leftVertDrive.setPower(0.6);
-        rightVertDrive.setPower(0.6);
-
-        leftVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        ElapsedTime timer = new ElapsedTime();
+        timer.reset();
+        while (timer.seconds() < sec) {
+            // Do nothing, just wait
+        }
+        leftVertDrive.setPower(0);
+        rightVertDrive.setPower(0);
     }
 
 
@@ -217,18 +209,16 @@ public class AutoControl {
         leftBackDrive.setPower(0);
         rightBackDrive.setPower(0);
     }
-
+    public boolean isRunning = false;
     public void scoreSpecimen() {
-        int amt = 120;
-        moveSliderUp(amt*tick2cm);
-        while(leftVertDrive.isBusy()) {
-
-        }
-        driveBackwardForSeconds(1);
-        while (leftFrontDrive.isBusy() || rightFrontDrive.isBusy() || leftBackDrive.isBusy() || rightBackDrive.isBusy()) {
-            // Optionally, update telemetry or handle other logic here
-        }
-        moveSliderUp(-amt*tick2cm);
+        double sec = 2.4;
+        isRunning = true;
+        moveSlider(sec, "up");
+        while(leftVertDrive.getPower() != 0) {}
+        driveForSeconds(1, "backward");
+        while(rightBackDrive.getPower() != 0) {}
+        moveSlider(sec, "down");
+        isRunning = false;
     }
     // Method to strafe right by a specific number of ticks
     public void goRight(int ticks) {
@@ -261,14 +251,17 @@ public class AutoControl {
                 || leftVertDrive.isBusy()
                 || rightVertDrive.isBusy();
     }
-    public void autoGo() {
 
-        autoDriveForward(-70*tick2cm);
-        while(isBusy()) {}
+    public void autoGo() {
+        double sec = 2;
+        driveForSeconds(sec, "backward");
+        while(rightBackDrive.getPower() != 0) {}
         scoreSpecimen();
         while(isBusy()) {}
-        autoDriveForward(20*tick2cm);
+        driveForSeconds(sec, "fwd");
         while(isBusy()) {}
+        goRight(100);
+        /*
         autoSpin180();
         while(isBusy()) {}
         // Facing towards enemy side, a bit behind the reds
@@ -288,7 +281,7 @@ public class AutoControl {
         autoDriveForward(70);
         autoDriveBackward(70);
 
-
+        */
 
     }
 }
