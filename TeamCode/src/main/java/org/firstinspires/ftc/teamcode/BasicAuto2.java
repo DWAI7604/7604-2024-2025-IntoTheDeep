@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name = "BasicAuto", group = "Linear Opmode")
-public class BasicAuto2 extends LinearOpMode {
+public class BasicAuto2 extends RobotLinearOpMode {
 
     private DcMotor leftFrontMotor;
     private DcMotor rightFrontMotor;
@@ -14,27 +14,14 @@ public class BasicAuto2 extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        // Initialize hardware
-        leftFrontMotor = hardwareMap.get(DcMotor.class, "leftFrontMotor");
-        rightFrontMotor = hardwareMap.get(DcMotor.class, "rightFrontMotor");
-        leftBackMotor = hardwareMap.get(DcMotor.class, "leftBackMotor");
-        rightBackMotor = hardwareMap.get(DcMotor.class, "rightBackMotor");
-
-        // Set motor directions (adjust if needed based on your robot's configuration)
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        declareHardwareProperties();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         if (opModeIsActive()) {
             // Drive in a square
-            driveInSquare(0.5, 1000);
-
-            // Drive in a circle
-            driveInCircle(0.5, 3000);
+          encoderDrive(.5, 30, MOVEMENT_DIRECTION.REVERSE);
         }
     }
 

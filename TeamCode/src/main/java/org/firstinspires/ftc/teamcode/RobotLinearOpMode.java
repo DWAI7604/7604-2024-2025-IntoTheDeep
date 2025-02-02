@@ -1788,10 +1788,10 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     public void declareHardwareProperties() {
 
 
-        rightFrontDriveMotor = hardwareMap.get(DcMotor.class, "rightFrontDriveMotor");
-        leftBackDriveMotor = hardwareMap.get(DcMotor.class, "leftFrontDriveMotor");
-        rightBackDriveMotor = hardwareMap.get(DcMotor.class, "rightBackDriveMotor");
-        leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "leftBackDriveMotor");
+        rightFrontDriveMotor = hardwareMap.get(DcMotor.class, "right_front_drive");
+        leftBackDriveMotor = hardwareMap.get(DcMotor.class, "left_front_drive");
+        rightBackDriveMotor = hardwareMap.get(DcMotor.class, "right_back_drive");
+        leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "left_back_drive");
         slideUp = hardwareMap.get(DcMotor.class, "slideUp");
         slideUp2 = hardwareMap.get(DcMotor.class, "slideUp2");
         //slideForward = hardwareMap.get(DcMotor.class, "slideForward");
@@ -1800,7 +1800,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         rightFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         leftFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        leftBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
 
         leftBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
