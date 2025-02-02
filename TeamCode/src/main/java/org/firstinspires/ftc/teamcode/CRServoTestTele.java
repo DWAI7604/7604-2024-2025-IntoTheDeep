@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+@Disabled
 @TeleOp(name="CRServoTele", group="Linear OpMode")
 public class CRServoTestTele extends RobotLinearOpMode {
     //private CRServo intakeLeft = null;
