@@ -1,20 +1,27 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+@Disabled
 @Autonomous(name="AUTO", group="Linear OpMode")
 public class AutoControl extends RobotLinearOpMode {
+
+    public AutoControl() {
+
+    }
+    public void runOpMode() {
+
+    }
 
     private DcMotor leftFrontDrive;
     private DcMotor leftBackDrive;
     private DcMotor rightFrontDrive;
     private DcMotor rightBackDrive;
 
-    private DcMotor horizontalDrive;
-    private DcMotor leftVertDrive;
-    private DcMotor rightVertDrive;
+
     private int tick2cm;
     int targetLeftPosition;
     int targetHorizontalPosition;
@@ -61,7 +68,9 @@ public class AutoControl extends RobotLinearOpMode {
 
     // Method to drive forward by a specific number of ticks
     public void autoDriveForward(int ticks) {
-
+         DcMotor horizontalDrive;
+         DcMotor leftVertDrive;
+         DcMotor rightVertDrive;
         leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -101,7 +110,7 @@ public class AutoControl extends RobotLinearOpMode {
     }
     // Method to drive forward for a specific number of seconds
     public void driveForSeconds(double seconds, String dir) {
-
+declareHardwareProperties();
         leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -255,6 +264,7 @@ public class AutoControl extends RobotLinearOpMode {
     }
 
     public void autoGo() {
+        declareHardwareProperties();
         double sec = 2;
         driveForSeconds(sec, "backward");
         while(rightBackDrive.getPower() != 0) {}
@@ -286,10 +296,5 @@ public class AutoControl extends RobotLinearOpMode {
         */
 
     }
-    @Override
-    public void runOpMode() {
-        declareHardwareProperties();
-        waitForStart();
-        autoGo();
     }
-}
+

@@ -41,8 +41,10 @@ public class TestTele extends RobotLinearOpMode {
 
         boolean Debounce = false;
 
-        ac = new AutoControl(leftFrontDrive, leftBackDrive,  rightFrontDrive,  rightBackDrive,
-                horizontalDrive, leftVertDrive, rightVertDrive);
+        ac = new AutoControl(leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive,
+                horizontalDrive, leftVertDrive, rightVertDrive) {
+
+        };
 
         // Set drive motor directions
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -97,15 +99,15 @@ public class TestTele extends RobotLinearOpMode {
             rightBackDrive.setPower(rightBackPower);
 
 
-            if(gamepad1.right_bumper){
-                ac.autoGo();
-            }
-            if(gamepad1.y && !Debounce) {
-                Debounce = true;
-                ac.scoreSpecimen();
-            } else if (!gamepad1.y && Debounce) {
-                Debounce = false;
-            }
+//            if(gamepad1.right_bumper){
+//                ac.autoGo();
+//            }
+//            if(gamepad1.y && !Debounce) {
+//                Debounce = true;
+//                ac.scoreSpecimen();
+//            } else if (!gamepad1.y && Debounce) {
+//                Debounce = false;
+//            }
 
             if (gamepad1.x) {
                 leftVertDrive.setPower(-0.6);

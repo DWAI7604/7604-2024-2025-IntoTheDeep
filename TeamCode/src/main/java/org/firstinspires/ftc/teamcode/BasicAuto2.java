@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-@Disabled
+
 @Autonomous(name = "BasicAuto", group = "Linear Opmode")
-public class BasicAuto2 extends RobotLinearOpMode {
+public class BasicAuto2 extends AutoControl {
 
     private DcMotor leftFrontMotor;
     private DcMotor rightFrontMotor;
@@ -22,7 +22,7 @@ public class BasicAuto2 extends RobotLinearOpMode {
 
         if (opModeIsActive()) {
             // Drive in a square
-          encoderDrive(.5, 30, MOVEMENT_DIRECTION.REVERSE);
+          encoderDrive(.5, 50, MOVEMENT_DIRECTION.REVERSE);
         }
     }
 

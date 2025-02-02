@@ -95,6 +95,9 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     DcMotor leftFrontDriveMotor;
     DcMotor rightBackDriveMotor;
     DcMotor leftBackDriveMotor;
+     DcMotor horizontalDrive;
+     DcMotor leftVertDrive;
+    DcMotor rightVertDrive;
     DcMotor slideUp;
     DcMotor slideUp2;
     //DcMotor slideForward;
@@ -1792,8 +1795,11 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         leftBackDriveMotor = hardwareMap.get(DcMotor.class, "left_front_drive");
         rightBackDriveMotor = hardwareMap.get(DcMotor.class, "right_back_drive");
         leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "left_back_drive");
-        slideUp = hardwareMap.get(DcMotor.class, "slideUp");
-        slideUp2 = hardwareMap.get(DcMotor.class, "slideUp2");
+        horizontalDrive = hardwareMap.get(DcMotor.class, "horizontal_slide_drive");
+        rightVertDrive = hardwareMap.get(DcMotor.class, "right_Vslide_drive");
+        leftVertDrive = hardwareMap.get(DcMotor.class, "left_Vslide_drive");
+        //slideUp = hardwareMap.get(DcMotor.class, "slideUp");
+        //slideUp2 = hardwareMap.get(DcMotor.class, "slideUp2");
         //slideForward = hardwareMap.get(DcMotor.class, "slideForward");
 
 
@@ -1801,12 +1807,19 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         leftFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         leftBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        horizontalDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightVertDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        leftVertDrive.setDirection(DcMotorEx.Direction.FORWARD);
+
 
         leftBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slideUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightVertDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        horizontalDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //slideUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //slideForward.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
