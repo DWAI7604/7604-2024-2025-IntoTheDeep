@@ -23,7 +23,7 @@ public class BasicAuto2 extends AutoControl {
         if (opModeIsActive()) {
             // Drive in a square
           encoderDrive(.5, 20, MOVEMENT_DIRECTION.REVERSE);
-          
+
         }
     }
 
